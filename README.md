@@ -1,28 +1,25 @@
-# IMPORTANT: March 2022
 
-It's horrible to see what is happening now in Ukraine, as Russian army is [bombarding houses, hospitals and kindergartens](https://twitter.com/DavidCornDC/status/1501620037785997316).
-
-Please [check out supportukrainenow.org](https://supportukrainenow.org/) for the ways how you can help people there. Spread the word.
-
-And if you are from Russia and you are against this war, please express your protest in some way. I know you can get punished for this, but you are one of the hopes of those innocent people.
-
----
 
 # Laravel Tips
 
-Awesome Laravel tips and tricks for all artisans. PR and ideas are welcome!
+Grandiosos Laravel tips y  trucos para todos los devs. PR e ideas son bienvenidas!
 
-An idea by [PovilasKorop](https://github.com/PovilasKorop) and [MarceauKa](https://github.com/MarceauKa).
+Una  idea  de  [PovilasKorop](https://github.com/PovilasKorop) y [MarceauKa](https://github.com/MarceauKa).
 
-Hey, like these tips? Also, check out my premium [Laravel courses](https://laraveldaily.com/courses?utm_source=github&utm_campaign=laravel-tips).
+Hey,  ¿Te gusta este contenido?  Checa mis cursos premium en  [Laravel courses](https://laraveldaily.com/courses?utm_source=github&utm_campaign=laravel-tips).
 
 ---
 
-Or if you want the Chinese version:
+¿Necesitas una version en inglés?:
+
+[LaravelDaily]([GitHub - LaravelDaily/laravel-tips: Awesome tips for Laravel](https://github.com/LaravelDaily/laravel-tips))
+
+¿Necesitas una version en Chino?:
 [中文版本](https://github.com/Lysice/laravel-tips-chinese/blob/master/README-zh.md)
 
 ---
-**Update 24 April 2023**: Currently there are **354 tips** divided into 14 sections.
+
+**Ultima Actualización 24 de Abril del 2023**: Actualmente hay  **354 tips** divididos en 14 secciones.
 
 ## Table of contents
 
