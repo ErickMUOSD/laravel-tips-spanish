@@ -1,5 +1,3 @@
-
-
 # Laravel Tips
 
 Grandiosos Laravel tips y  trucos para todos los devs. PR e ideas son bienvenidas!
@@ -21,7 +19,7 @@ Hey,  ¿Te gusta este contenido?  Checa mis cursos premium en  [Laravel courses]
 
 **Ultima Actualización 24 de Abril del 2023**: Actualmente hay  **354 tips** divididos en 14 secciones.
 
-## Table of contents
+## Tabla de contenidos
 
 - [DB Models and Eloquent](db-models-and-eloquent.md) (98 tips)
 - [Models Relations](models-relations.md) (36 tips)

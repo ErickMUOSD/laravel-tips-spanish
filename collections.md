@@ -1,6 +1,6 @@
 ## Collections
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Validation)](validation.md) ➡️ [Next (Auth)](auth.md)
+⬆️ [Menu principal](README.md#laravel-tips) ⬅️ [Anterior (Validations)](validation.md) ➡️ [SIguiente (Auth)](auth.md)
 
 - [Use groupBy on Collections with Custom Callback Function](#use-groupby-on-collections-with-custom-callback-function)
 - [Laravel Scopes can be combined using "Higher Order" orWhere Method](#laravel-scopes-can-be-combined-using-higher-order-orwhere-method)
@@ -13,9 +13,9 @@
 
 ### Use groupBy on Collections with Custom Callback Function
 
-If you want to group result by some condition which isn’t a direct column in your database, you can do that by providing a closure function.
+Si quieres agrupar resultados por alguna condición que no sea por una columna  directa en la base de datos, puedes conseguirlo con una function de clausura/cierre.
 
-For example, if you want to group users by day of registration, here’s the code:
+Por ejemplo si necesitas agrupar a todos los usuarios por el dia en que se registraron en la aplicacion el código sería así:
 
 ```php
 $users = User::all()->groupBy(function($item) {
@@ -23,29 +23,31 @@ $users = User::all()->groupBy(function($item) {
 });
 ```
 
-⚠️ Notice: it is done on a `Collection` class, so performed **AFTER** the results are fetched from the database.
+⚠️ Aviso: En el ejemplo anterior se usa la clase `Collection` , la agrupación de datos por la condción se realiza **DESPUES** de que los resultados son obetenios de la base de datos.
 
 ### Laravel Scopes can be combined using "Higher Order" orWhere Method
 
-Following example from the Docs.
+El siguiente ejemplo pertenece a la documentación.
 
-Before:
+Antes:
+
 ```php
 User::popular()->orWhere(function (Builder $query) {
      $query->active();
 })->get()
 ```
 
-After:
+Después:
+
 ```php
 User::popular()->orWhere->active()->get();
 ```
 
-Tip given by [@TheLaravelDev](https://twitter.com/TheLaravelDev/status/1564608208102199298/)
+⭐ Aportación de [@TheLaravelDev](https://twitter.com/TheLaravelDev/status/1564608208102199298/) 
 
 ### Multiple Collection Methods in a Row
 
-If you query all results with `->all()` or `->get()`, you may then perform various Collection operations on the same result, it won’t query database every time.
+Si realizas un consulta para obtener todos los resultados con `->all()` o `->get()`, después puedes realizar varias operaciones de agregación con el mismo resultado, no  se tiene que realizar varias peticiones a la base de datos cada vez que se use una  funcion de agregación.
 
 ```php
 $users = User::all();
@@ -54,27 +56,29 @@ echo 'Average age: ' . $users->avg('age');
 echo 'Total budget: ' . $users->sum('budget');
 ```
 
+✅Algunas [funciones de agregación]([Database: Query Builder - Laravel - The PHP Framework For Web Artisans](https://laravel.com/docs/10.x/queries#aggregates)) son: `count`, `max`, `min`, `avg` y `sum`. 
+
 ### Calculate Sum with Pagination
 
-How to calculate the sum of all records when you have only the PAGINATED collection? Do the calculation BEFORE the pagination, but from the same query.
+Como realizar la suma de todos los registros cuando tiene paginados los resultados. Para esto debes hacer la agregación ANTES de la paginación pero en la misma consulta.
 
 ```php
-// How to get sum of post_views with pagination?
+// Como conseguir la suma de los Post con paginación?
 $posts = Post::paginate(10);
-// This will be only for page 1, not ALL posts
+// La suma solo será de la pagina 1, no de todos los Post
 $sum = $posts->sum('post_views');
 
-// Do this with Query Builder
+// Usa Query builder
 $query = Post::query();
-// Calculate sum
+// Calculamos la suma
 $sum = $query->sum('post_views');
-// And then do the pagination from the same query
+// Después hacemos la paginación en la misma consulta 
 $posts = $query->paginate(10);
 ```
 
 ### Serial no in foreach loop with pagination
 
-We can use foreach collection items index as serial no (SL) in pagination.
+Es posible utilizar el índice de los elementos de una colección en un bucle "foreach" como número de serie (SL) en la paginación
 
 ```php
    ...
@@ -87,12 +91,13 @@ We can use foreach collection items index as serial no (SL) in pagination.
     @endforeach
 ```
 
-it will solve the issue of next pages(?page=2&...) index count from continue.
+Esto resolverá el problema de que en las páginas siguientes (?page=2&...), el índice comience desde el punto en el que se detuvo.
 
 ### Higher order collection message
 
-Collections also provide support for "higher order messages", which are short-cuts for performing common actions on collections.
-This example calculates the price per group of products on an offer.
+Las colecciones también brindan soporte para "mensajes de orden superior", que son atajos para realizar acciones comunes en las colecciones.
+
+En este ejemplo se caclula el precio por grupo de productos en la variable offer
 
 ```php
 $offer = [
@@ -112,36 +117,34 @@ $totalPerGroup = collect($offer['lines'])->groupBy->group->map->sum('price');
 
 ### Get an existing key or insert a value if it doesn't exist and return the value
 
-In Laravel 8.81 `getOrPut` method to Collections that simplifies the use-case where you want to either get an existing key or insert a value if it doesn't exist and return the value.
+En Laravel 8.81 las colleciones aceptan el metodo `getOrPut` que simplifica el caso de uso donde ya sea que obtengas una llave existente o quieras insertar un valor en caso de que no exista y retornar lo al mismo tiempo. 
 
 ```php
 $key = 'name';
-// Still valid
+// Buena opcion pero se puede mejorar...
 if ($this->collection->has($key) === false) {
     $this->collection->put($key, ...);
 }
 
 return $this->collection->get($key);
 
-// Using the `getOrPut()` method with closure
+// Usando el metodo 'getOrPut()' con una función
 return $this->collection->getOrPut($key, fn() => ...);
-
-// Or pass a fixed value
+// O pasar un valor por defecto
 return $this->collection->getOrPut($key, $value='teacoders');
 ```
 
-Tip given by [@Teacoders](https://twitter.com/Teacoders/status/1488338815592718336)
+⭐Aportación de  [@Teacoders](https://twitter.com/Teacoders/status/1488338815592718336)  
 
 ### Static times method
 
-The static times method creates a new collection by invoking the given closure a specified number of times.
+El método estático `times` crea una nueva collecion al invokar la clausura proporcionada un número específico de veces.
 
 ```php
 Collection::times(7, function ($number) {
     return now()->addDays($number)->format('d-m-Y');
 });
-// Output: [01-04-2022, 02-04-2022, ..., 07-04-2022]
+// Resultado: [01-04-2022, 02-04-2022, ..., 07-04-2022]
 ```
 
-Tip given by [@Teacoders](https://twitter.com/Teacoders/status/1509447909602906116)
-
+⭐Aportación de  [@Teacoders ](https://twitter.com/Teacoders/status/1509447909602906116) 
