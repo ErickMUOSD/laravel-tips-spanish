@@ -1,6 +1,6 @@
 ## Auth
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Collections)](collections.md) ➡️ [Next (Mail)](mail.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (Collections)](collections.md) ➡️ [Siguiente(Mail)](mail.md)
 
 - [Check Multiple Permissions at Once](#check-multiple-permissions-at-once)
 - [Authenticate users with more options](#authenticate-users-with-more-options)
@@ -11,21 +11,21 @@
 
 ### Check Multiple Permissions at Once
 
-In addition to `@can` Blade directive, did you know you can check multiple permissions at once with `@canany` directive?
+En complemento a la directiva `@can` ¿Sabías que puedes checar multiples permisos en una sola linea de código con  la directiva `@canany`? 
 
 ```blade
 @canany(['update', 'view', 'delete'], $post)
-    // The current user can update, view, or delete the post
+    // El actual usuario puede actualizar, mirar o borrar el post
 @elsecanany(['create'], \App\Post::class)
-    // The current user can create a post
+    // EL actual usuario puede crear un post
 @endcanany
 ```
 
 ### Authenticate users with more options
 
-If you only want to authenticate users that are also "activated", for example, it's as simple as passing an extra argument to `Auth::attempt()`.
+Si solo quieres  autenticar usuarios cumplan con cierta condición,  porejemplo  que en la columna "activated_at" no sea nulo,  es tan simple como pasar un argumento extra a `Auth::attempt()`.
 
-No need for complex middleware or global scopes.
+No se necesitan middleware complejos o scopes globales.
 
 ```php
 Auth::attempt(
@@ -37,11 +37,11 @@ Auth::attempt(
 );
 ```
 
-Tip given by [@LukeDowning19](https://twitter.com/LukeDowning19)
+⭐Aportación de [@LukeDowning19](https://twitter.com/LukeDowning19)
 
 ### More Events on User Registration
 
-Want to perform some actions after new user registration? Head to `app/Providers/EventServiceProvider.php` and add more Listeners classes, and then in those classes implement `handle()` method with `$event->user` object
+¿Necesitas realizar algunas acciones depués de  la registración de un usuario? Dale un vistazo a `app/Providers/EventServiceProvider.php` y añade mas clases Listeners para  despues en  esas clases implementar el método `handle()`con el objeto `$event->user`
 
 ```php
 class EventServiceProvider extends ServiceProvider
@@ -58,8 +58,7 @@ class EventServiceProvider extends ServiceProvider
 
 ### Did you know about Auth::once()?
 
-You can login with user only for ONE REQUEST, using method `Auth::once()`.
-No sessions or cookies will be utilized, which means this method may be helpful when building a stateless API.
+Puedes logear cualquier usuario  solo para **UNA PETICION**, usando el método `Auth::once()`. No hay necesidad de usar sessions o cookies lo cual significa que este método puede ser utíl cuando construimos una stateless API
 
 ```php
 if (Auth::once($credentials)) {
@@ -69,9 +68,9 @@ if (Auth::once($credentials)) {
 
 ### Change API Token on users password update
 
-It's convenient to change the user's API Token when its password changes.
+Es conveniente cambiar el API token del usuario cuando su contraseña cambia.
 
-Model:
+En el modelo definimos:
 
 ```php
 protected function password(): Attribute
@@ -87,25 +86,24 @@ protected function password(): Attribute
 
 ### Override Permissions for Super Admin
 
-If you've defined your Gates but want to override all permissions for SUPER ADMIN user, to give that superadmin ALL permissions, you can intercept gates with `Gate::before()` statement, in `AuthServiceProvider.php` file.
+Si has definido tus puertas de acceso (Gates) pero quieres sobreescribir todos los permisos para el usuario SUPER ADMIN, para darle a ese superadministrador TODOS los permisos, puedes interceptar las puertas de acceso utilizando la declaración `Gate::before()` en el archivo `AuthServiceProvider.php`.
 
 ```php
-// Intercept any Gate and check if it's super admin
-Gate::before(function($user, $ability) {
-    if ($user->is_super_admin == 1) {
-        return true;
-    }
+// Interceptar cualquier Gate y checar si es super admin
+Gate::before(function(user, ability) {
+ if (user->is_super_admin == 1) {
+ return true;
+ }
 });
-
-// Or if you use some permissions package...
-Gate::before(function($user, $ability) {
-    if ($user->hasPermission('root')) {
-        return true;
-    }
+// O si solo quiere algunos permisos del paquete
+Gate::before(function(user, ability) {
+ if (user->hasPermission('root')) {
+ return true;
+ }
 });
 ```
 
-If you want to do something in your Gate when there is no user at all, you need to add a type hint for `$user` allowing it to be `null`. For example, if you have a role called Anonymous for your non-logged-in users:
+Si deseas hacer algo en tu puerta de acceso (Gate) cuando no hay ningún usuario en absoluto, debes agregar un tipo de indicación (`type hint`) para `$user` permitiendo que sea `null`. Por ejemplo, si tienes un rol llamado "Anonymous" para tus usuarios no autenticados:
 
 ```php
 Gate::before(function (?User $user, $ability) {
@@ -116,4 +114,3 @@ Gate::before(function (?User $user, $ability) {
     return $user->hasRole('Super Admin') ? true : null;
 });
 ```
-
