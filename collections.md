@@ -1,6 +1,6 @@
 ## Collections
 
-⬆️ [Menu principal](README.md#laravel-tips) ⬅️ [Anterior (Validations)](validation.md) ➡️ [SIguiente (Auth)](auth.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (Validations)](validation.md) ➡️ [SIguiente (Auth)](auth.md)
 
 - [Use groupBy on Collections with Custom Callback Function](#use-groupby-on-collections-with-custom-callback-function)
 - [Laravel Scopes can be combined using "Higher Order" orWhere Method](#laravel-scopes-can-be-combined-using-higher-order-orwhere-method)

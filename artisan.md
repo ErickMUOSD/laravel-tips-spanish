@@ -171,4 +171,3 @@ $schedule->command('emails:send')->daily()->skip(function () {
 ```
 
 Tip given by [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1494503181438492675)
-
