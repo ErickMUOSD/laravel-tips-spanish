@@ -1,6 +1,6 @@
 ## Views
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Migrations)](migrations.md) ➡️ [Next (Routing)](routing.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (Migrations)](migrations.md) ➡️ [Siguiente (Routing)](routing.md)
 
 - [$loop variable in foreach](#loop-variable-in-foreach)
 - [You can use Blade to generate more than HTML](#you-can-use-blade-to-generate-more-than-html)
@@ -25,30 +25,31 @@
 
 ### $loop variable in foreach
 
-Inside of foreach loop, check if current entry is first/last by just using `$loop` variable.
+Dentro de cada foreach, puedes revisar if la actual iteración es la primera o la ultima usando la variable `$loop`
 
 ```blade
 @foreach ($users as $user)
      @if ($loop->first)
-        This is the first iteration.
+        Esta es la primera iteración.
      @endif
 
      @if ($loop->last)
-        This is the last iteration.
+        Esta es la ultima iteración.
      @endif
 
      <p>This is user {{ $user->id }}</p>
 @endforeach
 ```
 
-There are also other properties like `$loop->iteration` or `$loop->count`.
-Learn more on the [official documentation](https://laravel.com/docs/master/blade#the-loop-variable).
+Existen otras propiedades como `$loop->iteration` or `$loop->count`.
+
+Consulta mas en la [Documentatión oficial](https://laravel.com/docs/master/blade#the-loop-variable).
 
 ### You can use Blade to generate more than HTML
 
-You can use it to generate any dynamic string or file you want. For example, a shell script or a sitemap file.
+Puedes usar las vistas  Blade para generar  cualquier string dinámico o archivo que deseés. Por ejemplo un script o un archivo sitemap .
 
-You only need to call the `render()` method on a view to get the result as a string.
+Solo necesitas llamar al método `render()` en una vista para traer el resultado como formato string.
 
 ```php
 $script = view('deploy-script')->render();
@@ -59,25 +60,27 @@ info("Executing deploy script...");
 $process = $ssh->execute(explode("\n", $script));
 ```
 
-Tip given by [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1566620670888275968/)
+⭐ Aportación de [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1566620670888275968/)
 
 ### Short attribute syntax for Blade Components
 
-Available from Laravel 9.32.
+Disponible apartir de  Laravel 9.32.
 
-Current syntax:
+Actual sintaxis:
+
 ```blade
 <x-profile :user-id="$userId"></x-profile>
 ```
 
-Short syntax:
+Sintaxis corta:
+
 ```blade
 <x-profile :$userId></x-profile>
 ```
 
 ### Share one variable with multiple views
 
-Have you ever needed to share one variable with multiple views in Laravel? Here's a simple solution for that.
+¿Alguna vez necesitaste compartir una variable sobre multiples vistas en Laravel? Aquí hay una simple solución para eso. 
 
 ```php
 use App\Models\Post;
@@ -96,11 +99,11 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-Tip given by [@codewithdary](https://twitter.com/codewithdary)
+⭐ Aportación de  [@codewithdary](https://twitter.com/codewithdary)
 
 ### Does view file exist?
 
-You can check if View file exists before actually loading it.
+Puedes revisar si una vista existe antes de rendereala.
 
 ```php
 if (view()->exists('custom.page')) {
@@ -108,7 +111,7 @@ if (view()->exists('custom.page')) {
 }
 ```
 
-You can even load an array of views and only the first existing will be actually loaded.
+Incluso puedes renderear multiples vistas y solo la primera que exista será rendereada.
 
 ```php
 return view()->first(['custom.dashboard', 'dashboard'], $data);
@@ -116,16 +119,16 @@ return view()->first(['custom.dashboard', 'dashboard'], $data);
 
 ### Error code Blade pages
 
-If you want to create a specific error page for some HTTP code, like 503 - just create a blade file with this code as filename, in `resources/views/errors/503.blade.php`, or `403.blade.php` etc, and it will automatically be loaded in case of that error code.
+¿Te ha pasado que en tu aplicación al momento de mostrar un erro HTTP como 404 carga una vista 0 agradable para la experiencia del usuario? Laravel nos permite personalizar esas vistas para cada uno de los errores HTTP, para esto debes crear el archivo en la ruta  `resources/views/errors/404.blade.php` y con el nombre del error.  De esta manera rendereara el contenido cuando se presente ese error.
 
 ### View without controllers
 
-If you want route to just show a certain view, don't create a Controller method, just use `Route::view()` function.
+Si necesitas mostrar una vista blade especifica, no es necesario crear el método en un nuevo controlador, en vez de eso utiliza `Route::view()`.
 
 ```php
-// Instead of this
+// En vez de esto
 Route::get('about', 'TextsController@about');
-// And this
+// Y esto
 class TextsController extends Controller
 {
     public function about()
@@ -133,41 +136,41 @@ class TextsController extends Controller
         return view('texts.about');
     }
 }
-// Do this
+// Haz esto
 Route::view('about', 'texts.about');
 ```
 
 ### Blade @auth
 
-Instead of if-statement to check logged in user, use `@auth` directive.
+En vez de usar una estructura condicional para verificar  si el usuario está logueado, usa la directiva `@auth`.
 
-Typical way:
+Convencional forma:
 
 ```blade
 @if(auth()->user())
-    // The user is authenticated.
+    // Este usuario está autenticado
 @endif
 ```
 
-Shorter:
+Forma corta:
 
 ```blade
 @auth
-    // The user is authenticated.
+    //  Este usuario está autenticado
 @endauth
 ```
 
-The opposite is `@guest` directive:
+Lo opuesto es la directiva`@guest` 
 
 ```blade
 @guest
-    // The user is not authenticated.
+    // Este usuario no está autenticado
 @endguest
 ```
 
 ### Two-level $loop variable in Blade
 
-In Blade's foreach you can use $loop variable even in two-level loop to reach parent variable.
+En el bucle "foreach" de Blade, puedes utilizar la variable $loop incluso en un bucle de dos niveles para acceder a la variable del padre.
 
 ```blade
 @foreach ($users as $user)
@@ -181,13 +184,13 @@ In Blade's foreach you can use $loop variable even in two-level loop to reach pa
 
 ### Create Your Own Blade Directive
 
-It’s very easy - just add your own method in `app/Providers/AppServiceProvider.php`. For example, if you want to have this for replace `<br>` tags with new lines:
+Es sencillo, solo necesitas añadir tu propio método en`app/Providers/AppServiceProvider.php`. Por ejemplo, si quieres que tu nuevo método remplace todas las nuevas etiquetas `<br>` con nuevas lineas.
 
 ```blade
 <textarea>@br2nl($post->post_text)</textarea>
 ```
 
-Add this directive to AppServiceProvider’s `boot()` method:
+Añade esta directivia al archivo AppServiceProvider  en el método `boot()`:
 
 ```php
 public function boot()
@@ -200,21 +203,21 @@ public function boot()
 
 ### Blade Directives: IncludeIf, IncludeWhen, IncludeFirst
 
-If you are not sure whether your Blade partial file actually would exist, you may use these condition commands:
+Si no estas seguro qué archivo blade existe o no , puedes usar estas directivas de condición:
 
-This will load header only if Blade file exists
+Esto solo cargará la la vista si el archivo existe.
 
 ```blade
 @includeIf('partials.header')
 ```
 
-This will load header only for user with role_id 1
+Esto cargará la vista si el usuario tiene el rol 1.
 
 ```blade
 @includeWhen(auth()->user()->role_id == 1, 'partials.header')
 ```
 
-This will try to load adminlte.header, if missing - will load default.header
+Esto cargará la vista adminlte.header, si no se encuentra, cargará el default.header.
 
 ```blade
 @includeFirst('adminlte.header', 'default.header')
@@ -223,17 +226,17 @@ This will try to load adminlte.header, if missing - will load default.header
 ### Use Laravel Blade-X variable binding to save even more space
 
 ```blade
-// Using include, the old way
+// Usando la forma convencional
 @include("components.post", ["title" => $post->title])
 
-// Using Blade-X
+// Usando Blade-X
 <x-post link="{{ $post->title }}" />
 
-// Using Blade-X variable binding
+// Usando Blade-X binding
 <x-post :link="$post->title" />
 ```
 
-Tip given by [@anwar_nairi](https://twitter.com/anwar_nairi/status/1442441888787795970)
+⭐ Aportación de  [@anwar_nairi](https://twitter.com/anwar_nairi/status/1442441888787795970)
 
 ### Blade components props
 
@@ -256,7 +259,7 @@ Tip given by [@anwar_nairi](https://twitter.com/anwar_nairi/status/1442441888787
 <x-button rounded>Submit</x-button>
 ```
 
-Tip given by [@godismyjudge95](https://twitter.com/godismyjudge95/status/1448825909167931396)
+⭐Aportación de [@godismyjudge95](https://twitter.com/godismyjudge95/status/1448825909167931396)
 
 ### Blade Autocomplete typehint
 
@@ -271,27 +274,27 @@ Tip given by [@godismyjudge95](https://twitter.com/godismyjudge95/status/1448825
 </div>
 ```
 
-Tip given by [@freekmurze](https://twitter.com/freekmurze/status/1455466663927746560)
+⭐Aportación de [@freekmurze](https://twitter.com/freekmurze/status/1455466663927746560)
 
 ### Component Syntax Tip
 
-Did you know that if you pass colon (:) before the component parameter, you can directly pass variables without print statement `{{ }}`?
+¿Sabías que si usas ` :` antes del parametro  del componente, no hay necesidad de colocar el  `{}`?
 
 ```blade
 <x-navbar title="{{ $title }}"/>
 
-// you can do instead
+// Haz esto en vez
 
 <x-navbar :title="$title"/>
 ```
 
-Tip given by [@sky_0xs](https://twitter.com/sky_0xs/status/1457056634363072520)
+⭐Aportación de [@sky_0xs](https://twitter.com/sky_0xs/status/1457056634363072520)
 
 ### Automatically highlight nav links
 
-Automatically highlight nav links when exact URL matches, or pass a path or route name pattern.
+Resalta automaticamente nav links cuando la URL coincide, o pasa el nombre de una ruta.
 
-A Blade component with request and CSS classes helpers makes it ridiculously simple to show active/inactive state.
+Un componente de blade con algunas clases y helpers hace esto ridiculamente fácil para mostrar el  componente actvio o inactvio.
 
 ```php
 class NavLink extends Component
@@ -343,11 +346,11 @@ class NavLink extends Component
 <x-nav-link :href="route('projects.index')" :active="$tab = 'projects'">Projects</x-nav-link>
 ```
 
-Tip given by [@mpskovvang](https://twitter.com/mpskovvang/status/1459646197635944455)
+⭐ Aportación de [@mpskovvang](https://twitter.com/mpskovvang/status/1459646197635944455)
 
 ### Cleanup loops
 
-Did you know the Blade `@each` directive can help cleanup loops in your templates?
+¿Sabías que las directivas `@each` blade pueden ayudarte a tener un código más limpio en tus templates?
 
 ```blade
 // good
@@ -362,13 +365,13 @@ Did you know the Blade `@each` directive can help cleanup loops in your template
 @each('partials.item', $items, 'item')
 ```
 
-Tip given by [@kirschbaum_dev](https://twitter.com/kirschbaum_dev/status/1463205294914297861)
+⭐ Aportación de [@kirschbaum_dev](https://twitter.com/kirschbaum_dev/status/1463205294914297861)
 
 ### Simple way to tidy up your Blade views
 
-A simple way to tidy up your Blade views!
+Aquí te presento una manera de hacer el código más limpio en tus vistas Blade.
 
-Use the `forelse loop`, instead of a `foreach loop` nested in an if statement
+Usa el `forelse loop`, en vez de usar el `foreach loop` convencional junto con una directiva `@if`.
 
 ```blade
 <!-- if/loop combination -->
@@ -392,13 +395,13 @@ Use the `forelse loop`, instead of a `foreach loop` nested in an if statement
 @endforelse
 ```
 
-Tip given by [@alexjgarrett](https://twitter.com/alexjgarrett/status/1465674086022107137)
+⭐Aportación de [@alexjgarrett](https://twitter.com/alexjgarrett/status/1465674086022107137)
 
 ### Checked blade directive
 
-In Laravel 9, you'll be able to use the cool new "checked" Blade directive.
+En Laravel 9 trae una nueva característica en forma de directiva `checked` Blade.
 
-This is going to be a nice addition that we can use to clean up our Blade views a little bit
+Esto nos permite tener un código más limpio en nuestras vistas.
 
 ```blade
 // Before Laravel 9:
@@ -410,13 +413,13 @@ This is going to be a nice addition that we can use to clean up our Blade views 
 <input type="radio" name="active" value="0" @checked(!old('active', $user->active))/>
 ```
 
-Tip given by [@AshAllenDesign](https://twitter.com/AshAllenDesign/status/1489567000812736513)
+⭐Aportación de [@AshAllenDesign](https://twitter.com/AshAllenDesign/status/1489567000812736513)
 
 ### Selected blade directive
 
-In Laravel 9, you'll be able to use the cool new "selected" Blade directive for HTML select elements.
+En Laravel 9 trae una nueva característica en forma de directiva `selected` Blade para nuestros elementos Select de HTML.
 
-This is going to be a nice addition that we can use to clean up our Blade views a little bit
+Esto nos permite tener un código más limpio en nuestras vistas.
 
 ```blade
 // Before Laravel 9:
@@ -432,5 +435,4 @@ This is going to be a nice addition that we can use to clean up our Blade views 
 </select>
 ```
 
-Tip given by [@VijayGoswami](https://vijaygoswami.in)
-
+⭐Aportación de [@VijayGoswami](https://vijaygoswami.in)
