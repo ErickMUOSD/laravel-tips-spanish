@@ -13,7 +13,7 @@
 
 ### Factory callbacks
 
-While using factories for seeding data, you can provide Factory Callback functions to perform some action after record is inserted.
+Mientras usamos Factories para insertar datos, podemos añadirle un Callback a las funciones para realizar alguna acción después de que los registros son insertados.
 
 ```php
 $factory->afterCreating(App\User::class, function ($user, $faker) {
@@ -23,8 +23,8 @@ $factory->afterCreating(App\User::class, function ($user, $faker) {
 
 ### Generate Images with Seeds/Factories
 
-Did you know that Faker can generate not only text values but also IMAGES? See `avatar` field here - it will generate 50x50 image:
-
+¿Sabías que la clase Faker puede generar no solo  texto sino imagenes?
+En este ejemplo el atributo avatar insertamos una imagen 50x50:
 ```php
 $factory->define(User::class, function (Faker $faker) {
     return [
@@ -40,7 +40,7 @@ $factory->define(User::class, function (Faker $faker) {
 
 ### Override values and apply custom login to them
 
-When creating records with Factories, you can use Sequence class to override some values and apply custom logic to them.
+Cuando creamos registros con Factories, podemos usar la clase Sequence para sobrescribir valores y así generar diferente lógica.
 
 ```php
 $users = User::factory()
@@ -54,21 +54,21 @@ $users = User::factory()
 
 ### Using factories with relationships
 
-When using factories with relationships, Laravel also provides magic methods.
+Laravel provee soporte  para aplicar métodos mágicos a las relaciones usando Factories.
 
 ```php
-// magic factory relationship methods
+// factories con métodos mágicos en las relaciones
 User::factory()->hasPosts(3)->create();
 
-// instead of
+// en vez de esto
 User::factory()->has(Post::factory()->count(3))->create();
 ```
 
-Tip given by [@oliverds\_](https://twitter.com/oliverds_/status/1441447356323430402)
+⭐ Aportación de  [@oliverds\_](https://twitter.com/oliverds_/status/1441447356323430402)
 
 ### Create models without dispatching any events
 
-Sometimes you may wish to `update` a given model without dispatching any events. You may accomplish this using the `updateQuietly` method
+Para *evitar* disparar algun evento sobre el modelo cuando utilizamos métodos como:  `update, create`  es necesario usar métodos como: `updateQuietly, createQuietly`. 
 
 ```php
 Post::factory()->createOneQuietly();
@@ -83,7 +83,7 @@ Post::factory()->createManyQuietly([
 
 ### Useful for() method
 
-The Laravel factory has a very useful `for()` method. You can use it to create `belongsTo()` relationships.
+En Laravel el método `for()` es bastante util para crear relaciones tipo `belongsTo()`.
 
 ```php
 public function run()
@@ -95,11 +95,11 @@ public function run()
 }
 ```
 
-Tip given by [@mmartin_joo](https://twitter.com/mmartin_joo/status/1461002439629361158)
+⭐ Aportación de [@mmartin_joo](https://twitter.com/mmartin_joo/status/1461002439629361158)
 
 ### Run factories without dispatching events
 
-If you want to create multiple records using Factory without firing any Events, you can wrap your code inside a withoutEvents closure.
+Si deseas crear registros masviamente sin lanzar eventos usando Factories necesitamos envolver nuestro código dentro de el método `withoutEvents
 
 ```php
 $posts = Post::withoutEvents(function () {
@@ -107,11 +107,11 @@ $posts = Post::withoutEvents(function () {
 });
 ```
 
-Tip given by [@TheLaravelDev](https://twitter.com/TheLaravelDev/status/1510965402666676227)
+⭐ Aportación de [@TheLaravelDev](https://twitter.com/TheLaravelDev/status/1510965402666676227)
 
 ### Specify dependencies in the run() method
 
-You can specify dependencies in the `run()` method of your seeder.
+Puedes especificar algunas dependecias en el método `run()` del seeder.
 
 ```php
 class DatabaseSeeder extends Seeder
@@ -140,5 +140,4 @@ class EventSeeder extends Seeder
 }
 ```
 
-Tip given by [@justsanjit](https://twitter.com/justsanjit/status/1514428294418079746)
-
+⭐ Aportación de  [@justsanjit](https://twitter.com/justsanjit/status/1514428294418079746)
