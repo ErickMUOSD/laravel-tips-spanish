@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "e3512d43fc6c31f3",
+        "id": "c7e4408c68147fab",
         "type": "tabs",
         "children": [
           {
-            "id": "6652ae7eb6839dd4",
+            "id": "c8a95353c0fa0c64",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "mail.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -85,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "mail.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "mail.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "mail.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -146,10 +138,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6652ae7eb6839dd4",
+  "active": "c8a95353c0fa0c64",
   "lastOpenFiles": [
+    "artisan.md",
     "README.md",
-    "factories.md",
-    "views.md"
+    "views.md",
+    "routing.md",
+    "mail.md",
+    "factories.md"
   ]
 }

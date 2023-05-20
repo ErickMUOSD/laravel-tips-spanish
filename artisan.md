@@ -1,6 +1,6 @@
 ## Artisan
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Mail)](mail.md) ➡️ [Next (Factories)](factories.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (Mail)](mail.md) ➡️ [Siguiente (Factories)](factories.md)
 
 - [Artisan command parameters](#artisan-command-parameters)
 - [Execute a Closure after command runs without errors or has any errors](#execute-a-closure-after-command-runs-without-errors-or-has-any-errors)
@@ -10,29 +10,27 @@
 - [Exact Laravel version](#exact-laravel-version)
 - [Launch Artisan command from anywhere](#launch-artisan-command-from-anywhere)
 - [Hide your custom command](#hide-your-custom-command)
-- [Skip method](#skip-method)
+- [Skip method](#Skip method)
 
 ### Artisan command parameters
 
-When creating Artisan command, you can ask the input in variety of ways: `$this->confirm()`, `$this->anticipate()`, `$this->choice()`.
-
+Cuando creamos comandos, podemos pedir la entrada de datos de diferentes formas: `$this->confirm()`, `$this->anticipate()`, `$this->choice()`.
 ```php
-// Yes or no?
+// Si o no?
 if ($this->confirm('Do you wish to continue?')) {
     //
 }
 
-// Open question with auto-complete options
+// Preguntas aviertas con opciones autocompletado
 $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 
-// One of the listed options with default index
+// Una de las opciones listadas con un index por defecto
 $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], $defaultIndex);
 ```
 
 ### Execute a Closure after command runs without errors or has any errors
 
-With Laravel scheduler you can execute a Closure when a command runs without errors with the onSuccess() method and also when a command has any errors with the onFailure() method.
-
+Con Laravel Scheduler puedes ejecutar una funcion cuando un comando  sin errores con el método `onSuccess` y también  cuando existen errores con el método `onFailure()`.
 ```php
 protected function schedule(Schedule $schedule)
 {
@@ -43,52 +41,51 @@ protected function schedule(Schedule $schedule)
 }
 ```
 
-Tip given by [@wendell_adriel](https://twitter.com/wendell_adriel)
+
+⭐ Aportación de [@wendell_adriel](https://twitter.com/wendell_adriel)
 
 ### Run artisan commands on specific environments
 
-Take control of your Laravel scheduled commands. Run them on specific environments for ultimate flexibility.
 
+Toma control de tus comandos programados en Laravel y correlos en entornos especificos para más flexibilidad. 
 ```php
 $schedule->command('reports:send')
     ->daily()
     ->environments(['production', 'staging']);
 ```
 
-Tip given by [@LaraShout](https://twitter.com/LaraShout)
+
+⭐ Aportación de  [@LaraShout](https://twitter.com/LaraShout)
 
 ### Maintenance Mode
 
-If you want to enable maintenance mode on your page, execute the down Artisan command:
-
+Si quieres habilitar el modo mantenimiento en tú página, ejectuta el cómando `down` .
 ```bash
 php artisan down
 ```
 
-Then people would see default 503 status page.
+Las personas que visiten la página recibirán el status 503.
 
-You may also provide flags, in Laravel 8:
+Cosidera algunos parametros para esto en Laravel 8:
 
-- the path the user should be redirected to
-- the view that should be prerendered
-- secret phrase to bypass maintenance mode
-- retry page reload every X seconds
+- La ruta que el usuario debería ser redirigido
+- La vista que debería ser rendereada
+- Frase secreta para saltarse el modo  mantenimiento
+- Número de intetos por cada x segundos
 
 ```bash
 php artisan down --redirect="/" --render="errors::503" --secret="1630542a-246b-4b66-afa1-dd72a4c43515" --retry=60
 ```
 
-Before Laravel 8:
-
-- message that would be shown
-- retry page reload every X seconds
-- still allow the access to some IP address
-
+Antes de Laravel 8:
+- Los mensajes deberían ser mostrados
+- Número de intetos x segundos
+- Permir el acceso a alguna dirección IP
 ```bash
 php artisan down --message="Upgrading Database" --retry=60 --allow=127.0.0.1
 ```
 
-When you've done the maintenance work, just run:
+Cuando quieras quitar el modo mantenimiento solo coloca el comando:
 
 ```bash
 php artisan up
@@ -96,8 +93,7 @@ php artisan up
 
 ### Artisan command help
 
-To check the options of artisan command, Run artisan commands with `--help` flag. For example, `php artisan make:model --help` and see how many options you have:
-
+Para revisar las opciones disponibles de cada comando. Corre el comando con el parametro `--help`. Por ejemplo `php artisan make:model --help`  y ver cuantas opciones tienes:
 ```
 Options:
   -a, --all             Generate a migration, seeder, factory, policy, resource controller, and form request classes for the model
@@ -125,12 +121,12 @@ Options:
 
 ### Exact Laravel version
 
-Find out exactly what Laravel version you have in your app, by running command
+Para saber la version de Laraver que tienes en tu aplicación, solo corre el comando:
 `php artisan --version`
 
 ### Launch Artisan command from anywhere
 
-If you have an Artisan command, you can launch it not only from Terminal, but also from anywhere in your code, with parameters. Use Artisan::call() method:
+Si tienes un comando, puedes lanzarlo no solo de la Terminal, sino también desde cualquier parte del código si es necesario con algunos parametros. Para esto usa el comando `Artisan::call()`:
 
 ```php
 Route::get('/foo', function () {
@@ -144,8 +140,7 @@ Route::get('/foo', function () {
 
 ### Hide your custom command
 
-If you don't want to show a specific command on the artisan command list, set `hidden` property to `true`
-
+Si no quieres mostrar algun comando en la  lista de comandos que lanzas a través de  `php artisan`   solo debes colocar `True` en el atributo `Hidden`
 ```php
 class SendMail extends Command
 {
@@ -154,20 +149,17 @@ class SendMail extends Command
 }
 ```
 
-You won't see `send:mail` on the available commands if you typed `php artisan`
+Así no verás `send:mail`  en los comandos disponibles.
 
-Tip given by [@sky_0xs](https://twitter.com/sky_0xs/status/1487921500023832579)
+⭐ Aportación de  [@sky_0xs](https://twitter.com/sky_0xs/status/1487921500023832579)
 
 ### Skip method
 
-Laravel the skip method in scheduler
-
-You can use `skip` in your commands to skip an execution
-
+Puedes saltar/evitar la ejeción de  tus comandos programados colocando el método `skip()` retornando  alguna fecha para ser excluida .
 ```php
 $schedule->command('emails:send')->daily()->skip(function () {
     return Calendar::isHoliday();
 });
 ```
 
-Tip given by [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1494503181438492675)
+⭐ Aportación de  [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1494503181438492675)
