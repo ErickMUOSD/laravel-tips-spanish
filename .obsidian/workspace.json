@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "factories.md",
+                "file": "mail.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "factories.md",
+                "file": "mail.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "factories.md",
+                "file": "mail.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "factories.md"
+                "file": "mail.md"
               }
             }
           }
@@ -148,8 +148,8 @@
   },
   "active": "6652ae7eb6839dd4",
   "lastOpenFiles": [
-    "factories.md",
     "README.md",
+    "factories.md",
     "views.md"
   ]
 }

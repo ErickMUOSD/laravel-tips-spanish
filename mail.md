@@ -1,6 +1,6 @@
 ## Mail
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Auth)](auth.md) ➡️ [Next (Artisan)](artisan.md)
+⬆️ [Meńu principal](README.md#laravel-tips) ⬅️ [Anterior (Auth)](auth.md) ➡️ [Siguiente (Artisan)](artisan.md)
 
 - [Testing email into laravel.log](#testing-email-into-laravellog)
 - [You don’t have to store files to use them as email attachments in Laravel](#you-dont-have-to-store-files-to-use-them-as-email-attachments-in-laravel)
@@ -12,13 +12,13 @@
 
 ### Testing email into laravel.log
 
-If you want to test email contents in your app but unable or unwilling to set up something like Mailgun, use `.env` parameter `MAIL_DRIVER=log` and all the email will be saved into `storage/logs/laravel.log` file, instead of actually being sent.
+Si necesitas testear/probar el contenido de los emails en tu aplicación pero no quieres configurar los servicios como Maligun, Mailtrap, etc. Solo necesitas colocar  en el .env `MAIL_DRIVER=log`  para que todos los emails sean guaradados en  `storage/logs/laravel.log`, en vez de enviarlo.
 
 ### You don’t have to store files to use them as email attachments in Laravel
 
-Simply use **attachData** to add user uploaded files in Mailables.
+Simplemente usa el método `attachData`  para añadir archivos a Emails.
 
-Here's a snippet from a Mailable class using it.
+Te presentamos el siguiente ejemplo usnado la class Mailable.
 ```php
 public function build()
 {
@@ -32,11 +32,11 @@ public function build()
 }
 ```
 
-Tip given by [@ecrmnn](https://twitter.com/ecrmnn/status/1570449885664808961)
+⭐ Aportación de   [@ecrmnn](https://twitter.com/ecrmnn/status/1570449885664808961)
 
 ### Preview Mailables
 
-If you use Mailables to send email, you can preview the result without sending, directly in your browser. Just return a Mailable as route result:
+Si tu usas Mailables para enviar emails, puedes previsualizar el resultado sin  enviarlos a algun servicio, mandandolos  al navegador. Para esto necesitas retornar el email como resultado. 
 
 ```php
 Route::get('/mailable', function () {
@@ -47,8 +47,7 @@ Route::get('/mailable', function () {
 
 ### Preview Mail without Mailables
 
-You can also preview your email without Mailables. For instance, when you are creating notification, you can specify the markdown that may be use for your mail notification.
-
+También puedes previsualizar tu correo electrónico sin Mailables. Por ejemplo, al crear una notificación, puedes especificar el formato markdown que se utilizará para tu notificación por correo electrónico.
 ```php
 use Illuminate\Notifications\Messages\MailMessage;
 
@@ -58,28 +57,25 @@ Route::get('/mailable', function () {
 });
 ```
 
-You may also use other methods provided by `MailMessage` object such as `view` and others.
+De hecho puedes usar otros métodos provistos por  el objeto `MailSessage` como  `view` y otros.
 
-Tip given by [@raditzfarhan](https://github.com/raditzfarhan)
-
+⭐ Aportación de [@raditzfarhan](https://github.com/raditzfarhan)
 ### Default Email Subject in Laravel Notifications
 
-If you send Laravel Notification and don't specify subject in **toMail()**, default subject is your notification class name, CamelCased into Spaces.
+Si necesitas enviar Laravel notificaciones y omites especificar el parametro `toMail()`, por defecto el asunto(subject) será el nombre de la clase.
 
-So, if you have:
-
+Por ejemplo tienes:
 ```php
 class UserRegistrationEmail extends Notification {
     //
 }
 ```
 
-Then you will receive an email with subject **User Registration Email**.
+Entonces recivirás un email con el aunto  **User Registration Email**.
 
 ### Send Notifications to Anyone
 
-You can send Laravel Notifications not only to a certain user with `$user->notify()`, but also to anyone you want, via `Notification::route()`, with so-called "on-demand" notifications:
-
+También puedes enviar Laravel Notificaciones no solo a ciertos usuarios sino notificar a cualquiera que necesites con el método  `Notification::route()` con las notificaciones "on-demand":
 ```php
 Notification::route('mail', 'taylor@example.com')
         ->route('nexmo', '5555555555')
@@ -89,7 +85,7 @@ Notification::route('mail', 'taylor@example.com')
 
 ### Set conditional object properties
 
-You can use the `when()` or `unless()` methods in your MailMessage notifications to set conditional object properties like a call to action.
+Puedes usar el método  `when()` o `unless()` en tus notificaciones MailMessage para colocar propiedades de manera condicionales.
 
 ```php
 class InvoicePaid extends Notification
@@ -107,7 +103,6 @@ class InvoicePaid extends Notification
 }
 ```
 
-Use the `when` or `unless` methods in you own classes by using the `Illuminate\Support\Traits\Conditionable` trait
+Usa los métodos `when()` o `unless()` en tus propias clases usando el Trait  `Illuminate\Support\Traits\Conditionable` .
 
-Tip given by [@Philo01](https://twitter.com/Philo01/status/1503302749525528582)
-
+⭐ Aportación de  [@Philo01](https://twitter.com/Philo01/status/1503302749525528582)
