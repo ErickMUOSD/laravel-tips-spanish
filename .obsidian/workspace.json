@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "c7e4408c68147fab",
+        "id": "71d48f8085844cf5",
         "type": "tabs",
         "children": [
           {
-            "id": "c8a95353c0fa0c64",
+            "id": "7ace9e89e307da16",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -138,10 +138,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c8a95353c0fa0c64",
+  "active": "7ace9e89e307da16",
   "lastOpenFiles": [
-    "artisan.md",
+    "models-relations.md",
+    "db-models-and-eloquent.md",
     "README.md",
+    "migrations.md",
+    "artisan.md",
     "views.md",
     "routing.md",
     "mail.md",

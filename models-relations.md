@@ -41,7 +41,7 @@
 
 ### OrderBy on Eloquent relationships
 
-You can specify orderBy() directly on your Eloquent relationships.
+Pudes espeicificar  `orderBy()`  para order dada la columna, directamente en las relaciones Eloquent.
 
 ```php
 public function products()
@@ -57,8 +57,7 @@ public function productsByName()
 
 ### Add where statement to Many-to-Many relation
 
-In your many-to-many relationships, you can add where statements to your pivot table using the `wherePivot` method.
-
+En las relaciones muchos a muchos, puedes añadir clausulas `where` a las tablas intermedias (pivot) usando el método  `wherePivot`.
 ```php
 class Developer extends Model
 {
@@ -77,15 +76,16 @@ class Developer extends Model
 }
 ```
 
-Tip given by [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1582904416457269248)
+⭐ Aportación de  [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1582904416457269248)
 
 ### Get the newest (or oldest) item of another relation
 
-Since Laravel 8.42, in an Eloquent model, you can define a relation that will get the newest (or oldest) item of another relation.
+
+Desde Laravel 8.42, en los modelos Eloquent puedes definir una relación para traer los más nuevos o los más viejos.
 
 ```php
 /**
- * Get the user's latest order.
+ * Los usuarios más nuevos
  */
 public function latestOrder()
 {
@@ -93,7 +93,7 @@ public function latestOrder()
 }
 
 /**
- * Get the user's oldest order.
+ * Los uusarios mas antiguo
  */
 public function oldestOrder()
 {
@@ -103,10 +103,9 @@ public function oldestOrder()
 
 ### Conditional relationships
 
-If you notice that you use same relationship often with additional "where" condition, you can create a separate relationship method.
+Si te das cuenta que usas las mismas relaciones con propiedades similares como "where" puedes  crear una nueva relación con ellas mismas. 
 
-Model:
-
+Modelo:
 ```php
 public function comments()
 {
@@ -121,7 +120,7 @@ public function approved_comments()
 
 ### Raw DB Queries: havingRaw()
 
-You can use RAW DB queries in various places, including `havingRaw()` function after `groupBy()`.
+Puedes usar consultas `Raw DB` en varios lugares, funciones incluidas como`havingRaw()` después `groupBy()`.
 
 ```php
 Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
@@ -129,7 +128,7 @@ Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
 
 ### Eloquent has() deeper
 
-You can use Eloquent `has()` function to query relationships even two layers deep!
+Puedes usar la función Eloquent `has()` para hacer queries en las relaciones en más de dos niveles de profundidad.
 
 ```php
 // Author -> hasMany(Book::class);
@@ -139,8 +138,7 @@ $authors = Author::has('books.ratings')->get();
 
 ### Has Many. How many exactly?
 
-In Eloquent `hasMany()` relationships, you can filter out records that have X amount of children records.
-
+En las relaciones Eloquent `hasMany()`  puedes filtrar los registros que tienen X cantidades de relaciones.
 ```php
 // Author -> hasMany(Book::class)
 $authors = Author::has('books', '>', 5)->get();
@@ -148,7 +146,8 @@ $authors = Author::has('books', '>', 5)->get();
 
 ### Default model
 
-You can assign a default model in `belongsTo` relationship, to avoid fatal errors when calling it like `{{ $post->user->name }}` if $post->user doesn't exist.
+
+Puedes asignar un modelo por defecto en las relaciones `belongsTo`, para evitar errores fatales cuando llamamos las relaciones como:  `{{ $post->user->name }}`, si el $post->user no existe.
 
 ```php
 public function user()
@@ -159,8 +158,8 @@ public function user()
 
 ### Use hasMany to create Many
 
-If you have `hasMany()` relationship, you can use `saveMany()` to save multiple "child" entries from your "parent" object, all in one sentence.
 
+Si tienes realciones `hasMany()` , puedes usar el método `saveMany()` para guardar multiples entradas desde el modelo padre al modelo hijo con una sola   linea.
 ```php
 $post = Post::find(1);
 $post->comments()->saveMany([
@@ -171,21 +170,20 @@ $post->comments()->saveMany([
 
 ### Multi level Eager Loading
 
-In Laravel you can Eager Load multiple levels in one statement, in this example we not only load the author relation but also the country relation on the author model.
 
+En Laravel puedes realizar Eager Loading en multiples niveles de relaciones, por ejemplo: cargamos a el modelo Book su author y dentro del author su relación país:
 ```php
 $users = Book::with('author.country')->get();
 ```
 
 ### Eager Loading with Exact Columns
 
-You can do Laravel Eager Loading and specify the exact columns you want to get from the relationship.
-
+Cuando realizamos Eager Loading podemos especificar qué columnas debemos traer nada más.
 ```php
 $users = Book::with('author:id,name')->get();
 ```
 
-You can do that even in deeper, second level relationships:
+Incluso podemos hacerlolo  en un segundo nivel:
 
 ```php
 $users = Book::with('author.country:id,name')->get();
@@ -193,8 +191,8 @@ $users = Book::with('author.country:id,name')->get();
 
 ### Touch parent updated_at easily
 
-If you are updating a record and want to update the `updated_at` column of parent relationship (like, you add new post comment and want `posts.updated_at` to renew), just use `$touches = ['post'];` property on child model.
 
+Si quieres actuaizar un registro y asu vez actualizar la columna `updated_at` de la relación padre, solo usa la propiedad `$touches = ['post'];` en el modelo hijo .
 ```php
 class Comment extends Model
 {
@@ -204,14 +202,16 @@ class Comment extends Model
 
 ### Always Check if Relationship Exists
 
-Never **ever** do `$model->relationship->field` without checking if relationship object still exists.
+Nunca accedas a un campo de la relación hijo ( `$model->relationship->field` ) sin antes revisar si la relación existe.
 
-It may be deleted for whatever reason, outside your code, by someone else's queued job etc.
-Do `if-else`, or `{{ $model->relationship->field ?? '' }}` in Blade, or `{{ optional($model->relationship)->field }}`. With php8 you can even use the nullsafe operator `{{ $model->relationship?->field) }}`
+Podrían haberlo borrado por la razón que sea.
+
+Podrías utilizar una condicional como:  `{{ $model->relationship->field ?? '' }}` en Blade o `{{ optional($model->relationship)->field }}`. Con la llegada de PHP 8.0 existe nullsafe operator que funciona así: `{{ $model->relationship?->field) }}`
 
 ### Use withCount() to Calculate Child Relationships Records
 
-If you have `hasMany()` relationship, and you want to calculate “children” entries, don’t write a special query. For example, if you have posts and comments on your User model, write this `withCount()`:
+
+Si tienes relaciones `hasMany()` y quieres calcular cuantas relaciones hijas contiene, no necesitas escribir consultas especiales. Por ejemplo si tienes  posts y comentarios en el modelo Usuario, escribes  `withCount()`:
 
 ```php
 public function index()
@@ -221,7 +221,9 @@ public function index()
 }
 ```
 
-And then, in your Blade file, you will access those number with `{relationship}_count` properties:
+
+Para usar los resultados de la consulta, en las vistas accedemos a la variable:
+`{relationship}_count` :
 
 ```blade
 @foreach ($users as $user)
@@ -233,16 +235,14 @@ And then, in your Blade file, you will access those number with `{relationship}_
 @endforeach
 ```
 
-You may also order by that field:
-
+También puedes ordernar el campo así:
 ```php
 User::withCount('comments')->orderBy('comments_count', 'desc')->get();
 ```
 
 ### Extra Filter Query on Relationships
 
-If you want to load relationship data, you can specify some limitations or ordering in a closure function. For example, if you want to get Countries with only three of their biggest cities, here's the code.
-
+Cuando traes relaciones a los modelos, puedes especificar algunos limitadores u ordenarlos en una función de cierre. Por ejemplo: si quieres obtener todos los Paises con los mayores habitantes aquí está el código:
 ```php
 $countries = Country::with(['cities' => function($query) {
     $query->orderBy('population', 'desc');
@@ -251,7 +251,7 @@ $countries = Country::with(['cities' => function($query) {
 
 ### Load Relationships Always, but Dynamically
 
-You can not only specify what relationships to ALWAYS load with the model, but you can do it dynamically, in the constructor method:
+Tu solo no puedes especificar qué relaciones **SIEMPRE** traer en tus modelos, sino también hacerlo dinamicamente en el método constructor
 
 ```php
 class ProductTag extends Model
@@ -271,7 +271,8 @@ class ProductTag extends Model
 
 ### Instead of belongsTo, use hasMany
 
-For `belongsTo` relationship, instead of passing parent's ID when creating child record, use `hasMany` relationship to make a shorter sentence.
+
+Cuando usamos la relación `belongsTo` , en vez de pasar el id padre cuando creamos registros hijos podemos usar  la relación `hasMany` para hacer más cortas las lineas de código. 
 
 ```php
 // if Post -> belongsTo(User), and User -> hasMany(Post)...
@@ -291,10 +292,9 @@ auth()->user()->posts()->create([
 
 ### Rename Pivot Table
 
-If you want to rename "pivot" word and call your relationship something else, you just use `->as('name')` in your relationship.
+Si necesitas renombrar la plabra "pivot" de las relaciones intermedias, especifica en la relación `->as('name')`.
 
-Model:
-
+Modelo:
 ```php
 public function podcasts() {
     return $this->belongsToMany(Podcast::class)
@@ -303,8 +303,7 @@ public function podcasts() {
 }
 ```
 
-Controller:
-
+Controlador:
 ```php
 $podcasts = $user->podcasts();
 foreach ($podcasts as $podcast) {
@@ -315,7 +314,7 @@ foreach ($podcasts as $podcast) {
 
 ### Update Parent in One Line
 
-If you have a `belongsTo()` relationship, you can update the Eloquent relationship data in the same sentence:
+Si tienes una relacion  `belongsTo()` , puedes actualizar el modelo  en una sola sentencia.
 
 ```php
 // if Project -> belongsTo(User::class)
@@ -324,21 +323,21 @@ $project->user->update(['email' => 'some@gmail.com']);
 
 ### Laravel 7+ Foreign Keys
 
-From Laravel 7, in migrations you don't need to write two lines for relationship field - one for the field and one for foreign key. Use method `foreignId()`.
+Desde Laravel 7 en las migraciones no necesitas escribir dos lineas donde creas la columna y después asignas la tabla foranea, en vez utiliza el método `foreignId()`. ``
 
 ```php
-// Before Laravel 7
+//Antes de Laravel 7
 Schema::table('posts', function (Blueprint $table)) {
     $table->unsignedBigInteger('user_id');
     $table->foreign('user_id')->references('id')->on('users');
 }
 
-// From Laravel 7
+// Desde Laravel 7
 Schema::table('posts', function (Blueprint $table)) {
     $table->foreignId('user_id')->constrained();
 }
 
-// Or, if your field is different from the table reference
+// o si tu campo es diferente de la tabla de referencia
 Schema::table('posts', function (Blueprint $table)) {
     $table->foreignId('created_by_id')->constrained('users', 'column');
 }
@@ -346,8 +345,7 @@ Schema::table('posts', function (Blueprint $table)) {
 
 ### Combine Two "whereHas"
 
-In Eloquent, you can combine `whereHas()` and `orDoesntHave()` in one sentence.
-
+En Eloquent puedes combinar el método  `whereHas()` y  `orDoesntHave()` en una consulta.
 ```php
 User::whereHas('roles', function($query) {
     $query->where('id', 1);
@@ -358,8 +356,7 @@ User::whereHas('roles', function($query) {
 
 ### Check if Relationship Method Exists
 
-If your Eloquent relationship names are dynamic and you need to check if relationship with such name exists on the object, use PHP function `method_exists($object, $methodName)`
-
+Si en tus relaciones de Eloquent los nombres son dinámicos y necesitas revisar si la relación existe en el objeto, usa la función `method_exists($object, $methodName)` de PHP.
 ```php
 $user = User::first();
 if (method_exists($user, 'roles')) {
@@ -369,15 +366,15 @@ if (method_exists($user, 'roles')) {
 
 ### Pivot Table with Extra Relations
 
-In many-to-many relationship, your pivot table may contain extra fields, and even extra relationships to other Model.
+In las relaciones muchos a muchos, la tabla pivot puede contener campos extras e incluso extra relaciones de otros modelos.
 
-Then generate a separate Pivot Model:
+Entonces necesitamos generar por seperado un Modelo que apunte comot abla Pivot. 
 
 ```bash
 php artisan make:model RoleUser --pivot
 ```
 
-Next, specify it in `belongsToMany()` with `->using()` method. Then you could do magic, like in the example.
+Después, especificamos en la relación `belongsToMany()` con el método `->using()`. Entonces así podemos hacer la mágia, como en este ejemplo:  
 
 ```php
 // in app/Models/User.php
@@ -405,16 +402,14 @@ $firstTeam = auth()->user()->roles()->first()->pivot->team->name;
 
 ### Load Count on-the-fly
 
-In addition to Eloquent's `withCount()` method to count related records, you can also load the count on-the-fly, with `loadCount()`:
-
+Además en el método `withCount()`  Eloquent que sirve para contar los registros de la relación, pero tambíen puedes cargarlo hasta que lo necesites con  `loadCount()`:
 ```php
-// if your Book hasMany Reviews...
+//si tu modelo Book tiene muchos Reviews
 $book = Book::first();
 
 $book->loadCount('reviews');
-// Then you get access to $book->reviews_count;
-
-// Or even with extra condition
+// Entonces obtienes acceso a $book->reviews_count;
+// O incluso con una condición extra
 $book->loadCount(['reviews' => function ($query) {
     $query->where('rating', 5);
 }]);
@@ -422,15 +417,15 @@ $book->loadCount(['reviews' => function ($query) {
 
 ### Randomize Relationship Order
 
-You can use `inRandomOrder()` to randomize Eloquent query result, but also you can use it to randomize the **relationship** entries you're loading with query.
+Puedes usar  `inRandomOrder()` para ordenar de forma aleatoria los resultados, pero también Laravel es capaz de ordenar de forma aleatoria  las relaciones.
 
 ```php
-// If you have a quiz and want to randomize questions...
+// SI tienes un examen y quieres hacer aleatoria las preguntas
 
-// 1. If you want to get questions in random order:
+// 1. Si quieres obtener las preguntas en order aleatorio:
 $questions = Question::inRandomOrder()->get();
 
-// 2. If you want to also get question options in random order:
+// 2. Si quieres además obtener las preguntas en orden aleatorio y también sus opciones:
 $questions = Question::with(['answers' => function($q) {
     $q->inRandomOrder();
 }])->inRandomOrder()->get();
@@ -438,12 +433,11 @@ $questions = Question::with(['answers' => function($q) {
 
 ### Filter hasMany relationships
 
-Just a code example from my project, showing the possibility of filtering hasMany relationships.
+Aquí te presento un código de mi proyecto como ejemplo, mostrando la posibilidad de filtrar las relaciones hasMany. 
 
 TagTypes -> hasMany Tags -> hasMany Examples
 
-And you wanna query all the types, with their tags, but only those that have examples, ordering by most examples.
-
+Y si quieres consultar todos los tipos que tengan sus Tags, pero solo esos que tengan Examples, odenandolo por los que contienen más Examples.
 ```php
 $tag_types = TagType::with(['tags' => function ($query) {
     $query->has('examples')
@@ -454,7 +448,7 @@ $tag_types = TagType::with(['tags' => function ($query) {
 
 ### Filter by many-to-many relationship pivot column
 
-If you have a many-to-many relationship, and you add an extra column to the pivot table, here's how you can order by it when querying the list.
+Si tienes  tienes relaciones muchas a muchas, en tabla pivot solo muestra las llaves foraneas ysi necesitas añadir una columna  existente solo añde `withPivot`.
 
 ```php
 class Tournament extends Model
@@ -479,7 +473,7 @@ class TournamentsController extends Controller
 
 ### A shorter way to write whereHas
 
-Released in Laravel 8.57: a shorter way to write whereHas() with a simple condition inside.
+Una manera de escribir whereHas() más corto y con una simple condición apartir de Laravel 8.57.
 
 ```php
 // Before
@@ -515,13 +509,11 @@ class User
 }
 ```
 
-Tip given by [@anwar_nairi](https://twitter.com/anwar_nairi/status/1441718371335114756)
+⭐ Aportación de [@anwar_nairi](https://twitter.com/anwar_nairi/status/1441718371335114756)
 
 ### New `whereBelongsTo()` Eloquent query builder method
 
-Laravel 8.63.0 ships with a new `whereBelongsTo()` Eloquent query builder method. Smiling face with heart-shaped eyes
-
-This allows you to remove BelongsTo foreign key names from your queries, and use the relationship method as a single source of truth instead!
+Con la llegada de Laravel 8.63.0 nos trae un  método `whereBelongsTo()` Eloquent query builder . Esto nos permite eliminar los nombres de las llaves foraneas en nuestras consultas y usar los métodos inertes de las relaciones más limpio.
 
 ```php
 // From:
@@ -541,26 +533,28 @@ Post::query()
 $query->whereBelongsTo($author, 'author')
 ```
 
-Tip given by [@danjharrin](https://twitter.com/danjharrin/status/1445406334405459974)
+⭐ Aportación de  [@danjharrin](https://twitter.com/danjharrin/status/1445406334405459974)
 
 ### The `is()` method of one-to-one relationships for comparing models
 
-We can now make comparisons between related models without further database access.
+Ahora podemos hacer comparaciones entre modelos sin hacer más consultas a base de datos.
 
 ```php
-// BEFORE: the foreign key is taken from the Post model
+// Antes: la llave foranea es tomada del modelo Post
 $post->author_id === $user->id;
 
-// BEFORE: An additional request is made to get the User model from the Author relationship
+// Antes: una petición adicional es hecha para obtener el modelo User desde la relación Autor
 $post->author->is($user);
 
-// AFTER
+// DESPUES
 $post->author()->is($user);
 ```
 
-Tip given by [@PascalBaljet](https://twitter.com/pascalbaljet)
+⭐ Aportación de @PascalBaljet](https://twitter.com/pascalbaljet)
 
 ### `whereHas()` multiple connections
+
+Con el método whereHas() además de poder realizar  consultas más especificas, también podemos especificar qué conexiones.
 
 ```php
 // User Model
@@ -591,32 +585,31 @@ $posts = Post::whereHas('user', function ($query) use ($request) {
   })->get();
 ```
 
-Tip given by [@adityaricki](https://twitter.com/adityaricki2)
+⭐ Aportación de [@PascalBaljet](https://twitter.com/pascalbaljet)
 
 ### Update an existing pivot record
 
-If you want to update an existing pivot record on the table, use `updateExistingPivot` instead of `syncWithPivotValues`.
+Si necesitas actualizar un registro intermedio en la tabla pivot, usa el método  `updateExistingPivot` en vez de `syncWithPivotValues`.
 
 ```php
-// Migrations
+// Migraciones
 Schema::create('role_user', function ($table) {
     $table->unsignedId('user_id');
     $table->unsignedId('role_id');
     $table->timestamp('assigned_at');
 })
 
-// first param for the record id
-// second param for the pivot records
+// Primer parametro para el id del registro y el segundo para actualizar las columnas
 $user->roles()->updateExistingPivot(
     $id, ['assigned_at' => now()],
 );
 ```
 
-Tip given by [@sky_0xs](https://twitter.com/sky_0xs/status/1461414850341621760)
+⭐ Aportación de [@sky_0xs](https://twitter.com/sky_0xs/status/1461414850341621760)
 
 ### Relation that will get the newest (or oldest) item
 
-New in Laravel 8.42: In an Eloquent model can define a relation that will get the newest (or oldest) item of another relation.
+Ahora en Laravel 8.32 en los modelos Eloquent podemos definir una relación que obtenga los ulitmos(los mas viejos) registros.
 
 ```php
 public function historyItems(): HasMany
@@ -639,13 +632,14 @@ public function latestHistoryItem(): HasOne
 ```php
 class User extends Authenticable {
     // Get most popular post of user
+	//Obtiene los post con más likes    
     public function mostPopularPost() {
         return $this->hasOne(Post::class)->ofMany('like_count', 'max');
     }
 }
 ```
 
-Tip given by [@LaravelEloquent](https://twitter.com/LaravelEloquent/status/1493324310328578054)
+⭐ Aportación de[@LaravelEloquent](https://twitter.com/LaravelEloquent/status/1493324310328578054)
 
 ### Avoid data leakage when using orWhere on a relationship
 
@@ -656,7 +650,7 @@ $user->posts()
     ->get();
 ```
 
-Returns: ALL posts where votes are greater than or equal to 100 are returned
+Retorna: todos los post donde los votos son mayores o iguales a 100.
 
 ```sql
 select * from posts where user_id = ? and active = 1 or votes >= 100
@@ -673,11 +667,11 @@ $users->posts()
     ->get();
 ```
 
-Returns: Users posts where votes are greater than or equal to 100 are returned
+Retorna: todos los post donde los votos son mayores o iguales a 100.
+
 
 ```sql
 select * from posts where user_id = ? and (active = 1 or votes >= 100)
 ```
 
-Tip given by [@BonnickJosh](https://twitter.com/BonnickJosh/status/1494779780562096139)
-
+⭐ Aportación de  [@BonnickJosh](https://twitter.com/BonnickJosh/status/1494779780562096139)
