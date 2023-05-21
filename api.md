@@ -1,6 +1,6 @@
 ## API
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Log and debug)](log-and-debug.md) ➡️ [Next (Other)](other.md)
+⬆️ [Menú](README.md#laravel-tips) ⬅️ [Anterior (Log and debug)](log-and-debug.md) ➡️ [Siguiente (Other)](other.md)
 
 - [API Resources: With or Without "data"?](#api-resources-with-or-without-data)
 - [Conditional Relationship Counts on API Resources](#conditional-relationship-counts-on-api-resources)
@@ -14,7 +14,7 @@
 
 ### API Resources: With or Without "data"?
 
-If you use Eloquent API Resources to return data, they will be automatically wrapped in 'data'. If you want to remove it, add `JsonResource::withoutWrapping();` in `app/Providers/AppServiceProvider.php`.
+Si usas Eloquent API Resources para retonar el resultado, este será envuelto en un 'data'. SI quieres quitarlo solo añade `JsonResource::withoutWrapping();` en `app/Providers/AppServiceProvider.php`.
 
 ```php
 class AppServiceProvider extends ServiceProvider
@@ -26,11 +26,11 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-Tip given by [@phillipmwaniki](https://twitter.com/phillipmwaniki/status/1445230637544321029)
+⭐ Aportación de   [@phillipmwaniki](https://twitter.com/phillipmwaniki/status/1445230637544321029)
 
 ### Conditional Relationship Counts on API Resources
 
-You may conditionally include the count of a relationship in your resource response by using the whenCounted method. By doing so, the attribute is not included if the relationships' count is missing.
+También puedes condicionalmente incluir los modelos contados de la relación en el resource response usando el método whenCounted. Al realizar esto el si atributo `model_count`   no es incluido no será puesto en el resource. 
 ```php
 public function toArray($request)
 {
@@ -45,13 +45,11 @@ public function toArray($request)
 }
 ```
 
-Tip given by [@mvpopuk](https://twitter.com/mvpopuk/status/1570480977507504128)
+⭐ Aportación de  [@mvpopuk](https://twitter.com/mvpopuk/status/1570480977507504128)
 
 ### API Return "Everything went ok"
 
-If you have API endpoint which performs some operations but has no response, so you wanna return just "everything went ok", you may return 204 status code "No
-content". In Laravel, it's easy: `return response()->noContent();`.
-
+Si en tú API tienes un endpoint que  el cual realiza algunas operaciones pero no retorna una respuesta y si solo quieres retornar algo como "everything ok", entonces solo debes retornar el status 204 "No content" pues con Laravel es fácil usando: `return response()->noContent();`.
 ```php
 public function reorder(Request $request)
 {
@@ -65,11 +63,9 @@ public function reorder(Request $request)
 
 ### Avoid N+1 queries in API resources
 
-You can avoid N+1 queries in API resources by using the `whenLoaded()` method.
-
-This will only append the department if it’s already loaded in the Employee model.
-
-Without `whenLoaded()` there is always a query for the department
+Para evitar el famoso problema N´1 queries en API resources utiliza  el método `whenLoaded()` .
+Esto solo añadirá la relación Department  si es que ya ha sido cargada en el modelo Employee.
+Sin el método  `whenLoaded()` siempre relaizará una consulta extra para el modelo Department.
 
 ```php
 class EmployeeResource extends JsonResource
@@ -87,35 +83,37 @@ class EmployeeResource extends JsonResource
 }
 ```
 
-Tip given by [@mmartin_joo](https://twitter.com/mmartin_joo/status/1473987501501071362)
+⭐ Aportación de [@mmartin_joo](https://twitter.com/mmartin_joo/status/1473987501501071362) 
 
 ### Get Bearer Token from Authorization header
 
-The `bearerToken()` function is very handy when you are working with apis & want to access the token from Authorization header.
+La función  `bearerToken()`  is bastante práctica cuando estamos trabajando con Apis y necesitamos obtener el token del Authorization  header.
 
 ```php
-// Don't parse API headers manually like this:
+
+//No necesitas parsear los headers de la API manualmente:
 $tokenWithBearer = $request->header('Authorization');
 $token = substr($tokenWithBearer, 7);
 
-//Do this instead:
+// Haz esto en vez
 $token = $request->bearerToken();
 ```
 
-Tip given by [@iamharis010](https://twitter.com/iamharis010/status/1488413755826327553)
+⭐ Aportación de [@iamharis010](https://twitter.com/iamharis010/status/1488413755826327553)
 
 ### Sorting Your API Results
 
 Single-column API sorting, with direction control
+Ordenación de API de una sola columna, con control de dirección.
 
 ```php
-// Handles /dogs?sort=name and /dogs?sort=-name
+// Parametros /dogs?sort=name and /dogs?sort=-name
 Route::get('dogs', function (Request $request) {
-    // Get the sort query parameter (or fall back to default sort "name")
+  
+    // Obtén el parámetro de consulta de ordenación (o usa la ordenación predeterminada "name")
     $sortColumn = $request->input('sort', 'name');
 
-    // Set the sort direction based on whether the key starts with -
-    // using Laravel's Str::startsWith() helper function
+    // Establece la dirección de ordenación en función de si la clave comienza con - // utilizando la función auxiliar Str::startsWith() de Laravel
     $sortDirection = Str::startsWith($sortColumn, '-') ? 'desc' : 'asc';
     $sortColumn = ltrim($sortColumn, '-');
 
@@ -124,8 +122,7 @@ Route::get('dogs', function (Request $request) {
 });
 ```
 
-we do the same for multiple columns (e.g., ?sort=name,-weight)
-
+Realizamos lo mismo con multiples columnas   (e.g., ?sort=name,-weight).
 ```php
 // Handles ?sort=name,-weight
 Route::get('dogs', function (Request $request) {
@@ -153,8 +150,7 @@ Route::get('dogs', function (Request $request) {
 
 #### Laravel 8 and below:
 
-There's a method `render()` in `App\Exceptions` class:
-
+Para poder personalizar las excepciones lanzadas por Laravel (not found, not authorized) existe un método `render()` in la clase `App\Exceptions`:
 ```php
    public function render($request, Exception $exception)
     {
@@ -182,8 +178,7 @@ There's a method `render()` in `App\Exceptions` class:
 
 #### Laravel 9 and above:
 
-There's a method `register()` in `App\Exceptions` class:
-
+Para poder personalizar las excepciones lanzadas por Laravel (not found, not authorized) existe un método `render()` in la clase `App\Exceptions`:
 ```php
     public function register()
     {
@@ -211,21 +206,20 @@ There's a method `register()` in `App\Exceptions` class:
     }
 ```
 
-Tip given by [Feras Elsharif](https://github.com/ferasbbm)
+⭐ Aportación de [Feras Elsharif](https://github.com/ferasbbm).
 
 ---
 
 ### Force JSON Response For API Requests
 
-If you have built an API and it encounters an error when the request does not contain "Accept: application/JSON " HTTP Header then the error will be returned as HTML or redirect response on API routes, so for avoid it we can force all API responses to JSON.
+Si tienes una API construida y te encuentras con un error cuando la petición no contiene el header  "Accept: application/JSON " entonces el error debe ser retornado como HTML, para evitar esto podemos forzar todas las respuestas en JSON
 
-The first step is creating middleware by running this command:
-
+El primer paso es crear un middleware con este comando:
 ```console
 php artisan make:middleware ForceJsonResponse
 ```
 
-Write this code on the handle function in `App/Http/Middleware/ForceJsonResponse.php` file:
+Escribe este código en la archivo dentro de la  función handle()  `App/Http/Middleware/ForceJsonResponse.php` :
 
 ```php
 public function handle($request, Closure $next)
@@ -235,7 +229,7 @@ public function handle($request, Closure $next)
 }
 ```
 
-Second, register the created middleware in app/Http/Kernel.php file:
+Segundo, registra el middleware creado previamente en  el archivo app/Http/Kernel.php:
 
 ```php
 protected $middlewareGroups = [        
@@ -245,7 +239,7 @@ protected $middlewareGroups = [
 ];
 ```
 
-Tip given by [Feras Elsharif](https://github.com/ferasbbm)
+⭐ Aportación de [Feras Elsharif](https://github.com/ferasbbm)
 
 ---
 
@@ -253,15 +247,16 @@ Tip given by [Feras Elsharif](https://github.com/ferasbbm)
 
 #### When to version?
 
-If you are working on a project that may have multi-release in the future or your endpoints have a breaking change like a change in the format of the response data, and you want to ensure that the API version remains functional when changes are made to the code.
+
+Si estás trabajando en un proyecto que podría tener múltiples versiones en el futuro o tus endpoints tienen cambios que rompen la compatibilidad, como un cambio en el formato de los datos de respuesta y quieres asegurarte de que la versión de la API siga funciona cuando se hayan hecho cambiós en el códgio.
 
 #### Change The Default Route Files 
-The first step is to change the route map in the `App\Providers\RouteServiceProvider` file, so let's get started:
+
+El primer paso es cambiar el trazado de rutas en el archivo  `App\Providers\RouteServiceProvider`, así que comencemos:
 
 #### Laravel 8 and above:
 
-Add a 'ApiNamespace' property 
-
+Añade la propiedad 'ApiNamespace' 
 ```php
 /**
  * @var string
@@ -270,7 +265,7 @@ Add a 'ApiNamespace' property
 protected string $ApiNamespace = 'App\Http\Controllers\Api';
 ```
 
-Inside the method boot, add the following code:
+Dentro del método boot añade el siguiente código:
 
 ```php
 $this->routes(function () {
@@ -291,7 +286,7 @@ $this->routes(function () {
 
 #### Laravel 7 and below:
 
-Add a 'ApiNamespace' property
+Añade la propiedad 'ApiNamespace' 
 
 ```php
 /**
@@ -301,7 +296,7 @@ Add a 'ApiNamespace' property
 protected string $ApiNamespace = 'App\Http\Controllers\Api';
 ```
 
-Inside the method map, add the following code:
+Dentro del método map, añade el siguiente código
 
 ```php
 // remove this $this->mapApiRoutes(); 
@@ -309,7 +304,7 @@ Inside the method map, add the following code:
     $this->mapApiV2Routes();
 ```
 
-And add these methods:
+y añade estos métodos:
 
 ```php
   protected function mapApiV1Routes()
@@ -350,4 +345,4 @@ routes
    └── web.php
 ```
 
-Tip given by [Feras Elsharif](https://github.com/ferasbbm)
+⭐ Aportación de  [Feras Elsharif](https://github.com/ferasbbm)

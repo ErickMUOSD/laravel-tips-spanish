@@ -1,6 +1,6 @@
 ## Routing
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Views)](views.md) ➡️ [Next (Validation)](validation.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (Views)](views.md) ➡️ [Siguiente (Validation)](validation.md)
 
 - [Route group within a group](#route-group-within-a-group)
 - [Declare a resolveRouteBinding method in your Model](#declare-a-resolveroutebinding-method-in-your-model)

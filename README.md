@@ -1,7 +1,9 @@
 # Laravel Tips
 
 Grandiosos Laravel tips y  trucos para todos los devs. PR e ideas son bienvenidas!
+
 Una  idea  de  [PovilasKorop](https://github.com/PovilasKorop) y [MarceauKa](https://github.com/MarceauKa).
+
 Hey,  ¿Te gusta este contenido?  Checa mis cursos premium en  [Laravel courses](https://laraveldaily.com/courses?utm_source=github&utm_campaign=laravel-tips).
 
 ---

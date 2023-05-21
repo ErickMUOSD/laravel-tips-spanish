@@ -1,6 +1,6 @@
 ## Models Relations
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (DB Models and Eloquent)](db-models-and-eloquent.md) ➡️ [Next (Migrations)](migrations.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (DB Models and Eloquent)](db-models-and-eloquent.md) ➡️ [SIguiente (Migrations)](migrations.md)
 
 - [OrderBy on Eloquent relationships](#orderby-on-eloquent-relationships)
 - [Add where statement to Many-to-Many relation](#add-where-statement-to-many-to-many-relation)
