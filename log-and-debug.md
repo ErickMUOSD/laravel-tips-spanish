@@ -1,6 +1,6 @@
 ## Log and debug
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Factories)](factories.md) ➡️ [Next (API)](api.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (Factories)](factories.md) ➡️ [Siguiente (API)](api.md)
 
 - [Logging with parameters](#logging-with-parameters)
 - [Log Long Running Laravel Queries](#log-long-running-laravel-queries)
@@ -13,13 +13,15 @@
 
 ### Logging with parameters
 
-You can write `Log::info()`, or shorter `info()` message with additional parameters, for more context about what happened.
+Puedes colocar  `Lg::info()` o el helper `info()`  el mensaje con parametros adicionales, para tener más contexto de lo que sucedió. 
 
 ```php
 Log::info('User failed to login.', ['id' => $user->id]);
 ```
 
 ### Log Long Running Laravel Queries
+
+Cuando tenemos nuestra aplicación en producción , podemos registrar  consultas que están tardando con el objetivo de debuguear más rápido.
 
 ```php
 DB::enableQueryLog();
@@ -32,13 +34,12 @@ DB::whenQueryingForLongerThen(1000, function ($connection) {
 });
 ```
 
-Tip given by [@realstevebauman](https://twitter.com/realstevebauman/status/1576980397552185344)
+⭐Aportación de [@realstevebauman](https://twitter.com/realstevebauman/status/1576980397552185344)
 
 ### Benchmark class
 
-In Laravel 9.32 we have a Benchmark class that can measure the time of any task.
+En Laravel 9.32 tenemos una clase Benchmark que puede medir el tiemo de duración de cada tarea.
 
-It's a pretty useful helper:
 ```php
 class OrderController
 {
@@ -49,26 +50,25 @@ class OrderController
 }
 ```
 
-Tip given by [@mmartin_joo](https://twitter.com/mmartin_joo/status/1583096196494553088)
+⭐Aportación de [@mmartin_joo](https://twitter.com/mmartin_joo/status/1583096196494553088)
 
 ### More convenient DD
 
-Instead of doing `dd($result)` you can put `->dd()` as a method directly at the end of your Eloquent sentence, or any Collection.
+En vez de imprimir el resultado  `dd($result)` podemos colocar `->dd()` como método directamente al final de nuestras sentencias Eloquent y Colleciones.
 
 ```php
-// Instead of
+// En vez de esto
 $users = User::where('name', 'Taylor')->get();
 dd($users);
-// Do this
+// Haz esto
 $users = User::where('name', 'Taylor')->get()->dd();
 ```
 
 ### Log with context
 
-New in Laravel 8.49: `Log::withContext()` will help you to differentiate the Log messages between different requests.
+Apartir de Laravel 8.49 `Log::withContext()`  puede ayudarte a diferenciar los Logs entre direferentes peticiones.
 
-If you create a Middleware and set this context, all Log messages will contain that context, and you'll be able to search them easier.
-
+Puedes crear un Middleware y colocar su contexto, entonces todos los Log Messages contendrán ese contexto, y serás capaz de buscarlos mucho más fácil a la hora de debugear.
 ```php
 public function handle(Request $request, Closure $next)
 {
@@ -86,8 +86,7 @@ public function handle(Request $request, Closure $next)
 
 ### Quickly output an Eloquent query in its SQL form
 
-If you want to quickly output an Eloquent query in its SQL form, you can invoke the toSql() method onto it like so
-
+Si quieres imprimir la consulta que será ejecutada en formato SQL de nuestros modelos Eloquent  podemos invocar el método **toSql()**.
 ```php
 $invoices = Invoice::where('client', 'James pay')->toSql();
 
@@ -95,11 +94,11 @@ dd($invoices)
 // select * from `invoices` where `client` = ?
 ```
 
-Tip given by [@devThaer](https://twitter.com/devThaer/status/1438816135881822210)
+⭐ Aportación de  [@devThaer](https://twitter.com/devThaer/status/1438816135881822210)
 
 ### Log all the database queries during development
 
-If you want to log all the database queries during development add this snippet to your AppServiceProvider
+Si queremos hacer Logs de todas las consultas a la base de datos durante el desarollo, añade este snippet en el AppServiceProvider:
 
 ```php
 public function boot()
@@ -112,34 +111,32 @@ public function boot()
 }
 ```
 
-Tip given by [@mmartin_joo](https://twitter.com/mmartin_joo/status/1473262634405449730)
+⭐ Aportación de  [@mmartin_joo](https://twitter.com/mmartin_joo/status/1473262634405449730) 
 
 ### Discover all events fired in one request
 
-If you want to implement a new listener to a specific event but you don't know its name, you can log all events fired during the request.
+SI necesitas implementar un nuevo listener a un evento específico pero no conoces su nombre, puedes hacer un Log a todos los eventos lanzados durante la petición.
 
-You can use the `\Illuminate\Support\Facades\Event::listen()` method on `boot()` method of `app/Providers/EventServiceProvider.php` to catch all events fired.
+Puedes usar el método  `\Illuminate\Support\Facades\Event::listen()`  en la función `boot()` de   `app/Providers/EventServiceProvider.php`  para recibir todos los eventos lazandos.
 
-**Important:** If you use the `Log` facade within this event listener then you will need to exclude events named `Illuminate\Log\Events\MessageLogged` to avoid an infinite loop. 
-(Example: `if ($event == 'Illuminate\\Log\\Events\\MessageLogged') return;`)
-
+**Importante:** si usas el `Log` facade dentro de este listener evento entonces necesitarás excluir eventos llamados  `Illuminate\Log\Events\MessageLogged` para evitar ciclos infinitos, por ejemplo : `if ($event == 'Illuminate\\Log\\Events\\MessageLogged') return;`.
 ```php
-// Include Event...
+// Incluir evento
 use Illuminate\Support\Facades\Event;
 
-// In your EventServiceProvider class...
+// En la clase  EventServiceProvider
 public function boot()
 {
     parent::boot();
 
     Event::listen('*', function ($event, array $data) {
-        // Log the event class
+        // Log
         error_log($event);
 
-        // Log the event data delegated to listener parameters
+        // Log la información del evento delegada a los parametros.
         error_log(json_encode($data, JSON_PRETTY_PRINT));
     });
 }
 ```
 
-Tip given by [@MuriloChianfa](https://github.com/MuriloChianfa)
+⭐ Aportación de [@MuriloChianfa](https://github.com/MuriloChianfa)
