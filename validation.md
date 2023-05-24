@@ -1,6 +1,6 @@
 ## Validation
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (Routing)](routing.md) ➡️ [Next (Collections)](collections.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (Routing)](routing.md) ➡️ [Siguiente (Collections)](collections.md)
 
 - [Image validation](#image-validation)
 - [Add Values to the Form Request After Validation](#add-values-to-the-form-request-after-validation)
@@ -29,7 +29,7 @@
 
 ### Image validation
 
-While validating uploaded images, you can specify the dimensions you require.
+Mientras validamos imagenes, puedes especificar las dimensiones que necesites.
 
 ```php
 ['photo' => 'dimensions:max_width=4096,max_height=4096']
@@ -51,9 +51,9 @@ class UpdatedBookRequest extends FormRequent
 
 ### Access model binding in FormRequests
 
-When using FormRequests, you can always access the binding model by simply using the following expression `$𝘁𝗵𝗶𝘀->{𝗿𝗼𝘂𝘁𝗲-𝗯𝗶𝗻𝗱𝗶𝗻𝗴-𝘃𝗮𝗿𝗶𝗮𝗯𝗹𝗲}`
+Cuando usamos FormRequest, siempre puedes acceder al modelo usnado la siguiente expresión.
 
-Here's an example.
+Aquí un ejemplo:
 
 ```php
 class CommunityController extends Controller
@@ -82,11 +82,12 @@ class CommunityUpdateRequest extends FormRequest
 }
 ```
 
-Tip given by [@bhaidar](https://twitter.com/bhaidar/status/1574715518501666817)
+⭐ Aportación de  [@bhaidar](https://twitter.com/bhaidar/status/1574715518501666817) 
 
 ### Rule which ensures the field under validation is required if another field is accepted
 
-You can use `required_if_accepted` validation rule which ensures the field under validation is required if another field is accepted (a value of yes, on, 1, or true).
+Puedes utilizar la regla de validación `required_if_accepted`, la cual asegura que el campo en validación es requerido si otro campo es aceptado (un valor de yes, on, 1 o true).
+
 ```php
 Validator::make([
      'is_company' => 'on',
@@ -97,12 +98,12 @@ Validator::make([
 ]);
 ```
 
-Tip given by [@iamgurmandeep](https://twitter.com/iamgurmandeep/status/1583420332693749761)
+
+⭐ Aportación de [@iamgurmandeep](https://twitter.com/iamgurmandeep/status/1583420332693749761)
 
 ### Custom validation error messages
 
-You can customize validation error messages per **field**, **rule** and **language** - just create a specific language file `resources/lang/xx/validation.php` with appropriate array structure.
-
+Puedes personalizar mensajes de errores por campo, regla y lenguaje. Solo crea un lenguaje nuevo en el archivo   `resources/lang/xx/validation.php` con la apropiada estructura.
 ```php
 'custom' => [
      'email' => [
@@ -113,7 +114,7 @@ You can customize validation error messages per **field**, **rule** and **langua
 
 ### Validate dates with "now" or "yesterday" words
 
-You can validate dates by rules before/after and passing various strings as a parameter, like: `tomorrow`, `now`, `yesterday`. Example: `'start_date' => 'after:now'`. It's using strtotime() under the hood.
+Puedes validar fechas con reglas before/after y pasar varios parametros   como:  `tomorrow`, `now`, `yesterday`. Ejemplo:  `'start_date' => 'after:now'`.  Usa el método strtotime() por debajo.
 
 ```php
 $rules = [
@@ -124,7 +125,7 @@ $rules = [
 
 ### Validation Rule with Some Conditions
 
-If your validation rules depend on some condition, you can modify the rules by adding `withValidator()` to your `FormRequest` class, and specify your custom logic there. Like, if you want to add validation rule only for some user role.
+SI tus reglas de validación dependen de alguna condición, puedes modificar las reglas añadiendo  `withValidator()` a tu clase FormRequest y especificar tu  lógica, por ejemplo si quieres añadir algunas reglas de validaciones para algun rol de usuario.
 
 ```php
 use Illuminate\Validation\Validator;
@@ -139,7 +140,7 @@ class StoreBlogCategoryRequest extends FormRequest {
 
 ### Change Default Validation Messages
 
-If you want to change default validation error message for specific field and specific validation rule, just add a `messages()` method into your `FormRequest` class.
+Si quieres cambiar los mensajes de error por defecto para un específico campo y una regla de validación específica, solo añade a tu clase FormRequest el méotodo `messages()` .
 
 ```php
 class StoreUserRequest extends FormRequest
@@ -158,8 +159,7 @@ class StoreUserRequest extends FormRequest
 
 ### Prepare for Validation
 
-If you want to modify some field before default Laravel validation, or, in other words, "prepare" that field, guess what - there's a method `prepareForValidation()` in `FormRequest` class:
-
+Si quieres modificar algunso campos antes de la Vlidación de Laravel, es decir, preparar el campo para cierta lógica, añade a la clase `FormRequest` el método `prepareForValidation()`.
 ```php
 protected function prepareForValidation()
 {
@@ -171,7 +171,8 @@ protected function prepareForValidation()
 
 ### Stop on First Validation Error
 
-By default, Laravel validation errors will be returned in a list, checking all validation rules. But if you want the process to stop after the first error, use validation rule called `bail`:
+
+Por defecto, los errores de validación serán retornados en una lista,. Pero si quieres parar el proceso de validación después del primer error sobre un campo específico usa la regla de validación `bail`:
 
 ```php
 $request->validate([
@@ -180,7 +181,8 @@ $request->validate([
 ]);
 ```
 
-If you need to stop validation on the first error in `FormRequest` class, you can set `stopOnFirstFailure` property to `true`:
+
+En la clase `FormRequest` puedes colocar la propiedad `stopOnFirstFailure` en `true` para parar la validaicón de todos los campos:
 
 ```php
 protected $stopOnFirstFailure = true;
@@ -188,7 +190,7 @@ protected $stopOnFirstFailure = true;
 
 ### Throw 422 status code without using validate() or Form Request
 
-If you don't use validate() or Form Request, but still need to throw errors with the same 422 status code and error structure, you can do it manually `throw ValidationException::withMessages()`
+Si no quieres usar validate() o un FomrRequest, pero aun necesitas lanzar errores con  el mismo status 422 y un envíar el error estructuradamente , puedes hacerlo manualmente con  `throw ValidationException::withMessages()`
 
 ```php
 if (! $user || ! Hash::check($request->password, $user->password)) {
@@ -200,7 +202,7 @@ if (! $user || ! Hash::check($request->password, $user->password)) {
 
 ### Rules depending on some other conditions
 
-If your rules are dynamic and depend on some other condition, you can create that array of rules on the fly
+Si tus reglas son dinámicas y dependen de otras condiciones, puedes crear el arreglo de reglas en la marcha.
 
 ```php
     public function store(Request $request)
@@ -228,10 +230,9 @@ If your rules are dynamic and depend on some other condition, you can create tha
 
 ### With Rule::when() we can conditionally apply validation rules
 
-Thanks to Rule::when() we can conditionally apply validation rules in laravel.
+Gracias a la regla `Rule::when()` podemos condicionalmente aplicar reglas de validación en Laravel.
 
-In this example we validate the value of the vote only if the user can actually vote the post.
-
+En este ejemplo validamos el valor del campo voto solo si el usuario tiene permisos para participar.
 ```php
 use Illuminate\Validation\Rule;
 
@@ -243,44 +244,39 @@ public function rules()
 }
 ```
 
-Tip given by [@cerbero90](https://twitter.com/cerbero90/status/1434426076198014976)
+⭐ Aportación de [@cerbero90](https://twitter.com/cerbero90/status/1434426076198014976)
 
 ### Use this property in the request classes to stop the validation of the whole request attributes
 
-Use this property in the request classes to stop the validation of the whole request attributes.
+Utiliza esta propiedad en las clases de solicitud para detener la validación de todos los atributos de la solicitud.
 
-Hint Direct
+Pista Directa
 
-This is different from `Bail` rule that stops the validation for just a single attribute if one of its rules doesn't validate.
-
+Esto es diferente de la regla `Bail`, que detiene la validación de un solo atributo si una de sus reglas no se cumple.
 ```php
 /**
-* Indicated if the validator should stop
- * the entire validation once a single
- * rule failure has occurred.
+ * Indica si el validator debería parar todas las validaciones cuando falla una sola regla.
  */
 protected $stopOnFirstFailure = true;
 ```
 
-Tip given by [@Sala7JR](https://twitter.com/Sala7JR/status/1436172331198603270)
+⭐ Aportación de [@Sala7JR](https://twitter.com/Sala7JR/status/1436172331198603270) 
 
 ### Rule::unique doesn't take into the SoftDeletes Global Scope applied on the Model
 
-Strange that `Rule::unique` doesn't take into the SoftDeletes Global Scope applied on the Model, by default.
+Es extraño que `Rule::unique` no tenga en cuenta el alcance global de SoftDeletes aplicado al modelo de forma predeterminada.
 
-But `withoutTrashed()` method is available
-
+Sin embargo, el método `withoutTrashed()` está disponible.
 ```php
 Rule::unique('users', 'email')->withoutTrashed();
 ```
 
 Tip given by [@Zubairmohsin33](https://twitter.com/Zubairmohsin33/status/1438490197956702209)
+⭐ Aportación de [@Zubairmohsin33](https://twitter.com/Zubairmohsin33/status/1438490197956702209)
 
 ### Validator::sometimes() method allows us to define when a validation rule should be applied
 
-The laravel `Validator::sometimes()` method allows us to define when a validation rule should be applied, based on the input provided.
-
-The snippet shows how to prohibit the use of a coupon if the quantity of the purchased items is not enough.
+El método  `Validator::sometimes()`  nos permite definir cuando una regla de validación debe ser aplicada, basada en los parametros pasados.
 
 ```php
 $data = [
@@ -312,11 +308,11 @@ $validator->sometimes('coupon', 'prohibited', function (Fluent $data) {
 $validator->validate();
 ```
 
-Tip given by [@cerbero90](https://twitter.com/cerbero90/status/1440226037972013056)
+⭐ Aportación de [@cerbero90](https://twitter.com/cerbero90/status/1440226037972013056)
 
 ### Array elements validation
 
-If you want to validate elements of an array that you submited use dot notation in rules with '\*'
+Si quieres validar los elementos dentro de cada posición de  un arreglo usa la palabra `*` en las reglas:
 
 ```php
 // say you have this array
@@ -339,12 +335,13 @@ $rules = [
 ];
 ```
 
-Tip given by [HydroMoon](https://github.com/HydroMoon)
+
+⭐ Aportación de [HydroMoon](https://github.com/HydroMoon)
 
 ### Password::defaults method
 
-You can enforce specific rules when validating user-supplied passwords by using the Password::defaults method. It includes options for requiring letters, numbers, symbols, and more.
 
+Puedes especificar algunas reglas cuando validamos contraseñas usando el método ` Password::defaults` . Incluye opciones para letras, simbolos y más.
 ```php
 class AppServiceProvider
 {
@@ -366,40 +363,38 @@ request()->validate([
 ])
 ```
 
-Tip given by [@mattkingshott](https://twitter.com/mattkingshott/status/1463190613260603395)
+
+⭐ Aportación de [@mattkingshott](https://twitter.com/mattkingshott/status/1463190613260603395)
 
 ### Form Requests for validation redirection
 
-when using Form Requests for validation, by default the validation error will redirect back to the previous page, but you can override it.
-Just define the property of `$redirect` or `$redirectRoute`.
-
-[Link to docs](https://laravel.com/docs/master/validation#customizing-the-redirect-location)
+Cuando usamos FormRequest para validaciones, por defecto los errores de validación serán redireccionados a la página anterior, pero puedes sobrescribirla. SOlo define la propiedad  `$redirect` o `$redirectRoute`.
 
 ```php
-// The URI that users should be redirected to if validation fails./
+// La URI que el usuario debería ser redireccionado si la validación falla
 protected $redirect = '/dashboard';
 
-// The route that users should be redirected to if validation fails.
+// La ruta que los uusarios deberían ser redireccionados si la validación falla
 protected $redirectRoute = 'dashboard';
 ```
 
 ### Mac validation rule
 
-New mac_address validation rule added in Laravel 8.77
-
+En Laravel 8.77 se han agregado reglas de validación para direcciones MAC
+.
 ```php
 $trans = $this->getIlluminateArrayTranslator();
 $validator = new Validator($trans, ['mac' => '01-23-45-67-89-ab'], ['mac' => 'mac_address']);
 $this->assertTrue($validator->passes());
 ```
 
-Tip given by [@Teacoders](https://twitter.com/Teacoders/status/1475500006673027072)
+⭐ Aportación de [@Teacoders](https://twitter.com/Teacoders/status/1475500006673027072)
 
 ### Validate email with TLD domain required
 
-By default, the `email` validation rule will accept an email without tld domain (ie: `taylor@laravel`, `povilas@ldaily`)
+Por defecto, las reglas de validación  para los email aceptarán un email sin un tld dominio,
 
-But if you want to make sure the email must have a tld domain (ie: `taylor@laravel.com`, `povilas@ldaily.com`), use `email:filter` rule.
+Pero si quieres asegurarte que el email tenga un tld dominio, usa la regla  `email:filter` .
 
 ```php
 [
@@ -408,13 +403,11 @@ But if you want to make sure the email must have a tld domain (ie: `taylor@larav
 ],
 ```
 
-Tip given by [@Chris1904](https://laracasts.com/discuss/channels/general-discussion/laravel-58-override-email-validation-use-57-rules?replyId=645613)
+⭐ Aportación de [@Chris1904](https://laracasts.com/discuss/channels/general-discussion/laravel-58-override-email-validation-use-57-rules?replyId=645613)
 
 ### New array validation rule required_array_keys
 
-Laravel 8.82 adds a `required_array_keys` validation rule. The rule checks that all of the specified keys exist in an array.
-
-Valid data that would pass the validation:
+Laravel 8.82 añade una regla de validación `required_array_keys`  que verifica que todos las llaves(keys) de un arreglo existan.
 
 ```php
 $data = [
@@ -436,7 +429,7 @@ $validator = Validator::make($data, $rules);
 $validator->passes(); // true
 ```
 
-Invalid data that would fail the validation:
+Datos que estén en la validación pero no se encuentren en el arreglo aunque todos los demás sí, fallarían la validaición:
 
 ```php
 $data = [
@@ -457,13 +450,13 @@ $validator = Validator::make($data, $rules);
 $validator->passes(); // false
 ```
 
-Tip given by [@AshAllenDesign](https://twitter.com/AshAllenDesign/status/1488853052765478914)
+⭐ Aportación de [@AshAllenDesign](https://twitter.com/AshAllenDesign/status/1488853052765478914) 
 
 ### Position placeholder in validation messages
 
-In Laravel 9 you can use the :position placeholder in validation messages if you're working with arrays.
+En Laravel  9 puedes usar el  atributo `:position`  en los mensjaes de validación si esque estas trabajando con arreglos.
 
-This will output: "Please provide an amount for price #2"
+En este ejemplo el resultado sería "Porfavor provee una cantidad para el precio #2".
 
 ```php
 class CreateProductRequest extends FormRequest
@@ -486,11 +479,11 @@ class CreateProductRequest extends FormRequest
 }
 ```
 
-Tip given by [@mmartin_joo](https://twitter.com/mmartin_joo/status/1502299053635235842)
+⭐ Aportación de  [@mmartin_joo](https://twitter.com/mmartin_joo/status/1502299053635235842)
 
 ### Exclude validation value
 
-When you need to validate a field, but don't actually require it for anything e.g. 'accept terms and conditions', make use of the `exclude` rule. That way, the `validated` method won't return it...
+Cuando necesitas validar un campo, pero en realidad no lo necesitas más adelante, por ejemplo  el campo marcado 'Acepto terminos y condiciones', asegurate de usar la regla  `exclude`. De esta menera el método validated no lo regresará.
 
 ```php
 class StoreRequest extends FormRequest
@@ -520,5 +513,4 @@ class RegistrationController extends Controller
     }
 ```
 
-Tip given by [@mattkingshott](https://twitter.com/mattkingshott/status/1518590652682063873)
-
+⭐ Aportación de  [@mattkingshott](https://twitter.com/mattkingshott/status/1518590652682063873)
