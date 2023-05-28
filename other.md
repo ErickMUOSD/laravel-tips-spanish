@@ -1,6 +1,6 @@
 ## Other
 
-⬆️ [Go to main menu](README.md#laravel-tips) ⬅️ [Previous (API)](api.md)
+⬆️ [Menú principal](README.md#laravel-tips) ⬅️ [Anterior (API)](api.md)
 
 - [Localhost in .env](#localhost-in-env)
 - [Time value in the past/future](#time-value-in-the-pastfuture)
@@ -77,7 +77,7 @@
 
 ### Localhost in .env
 
-Don't forget to change `APP_URL` in your `.env` file from `http://localhost` to the real URL, cause it will be the basis for any links in your email notifications and elsewhere.
+No olvides cambiar tu `APP_URL` in tu  archivo `.env` de   `http://localhost`  a  la url real. Esta URL es la base para cualquier external link en notificaciones, emails y otras cosas. 
 
 ```
 APP_NAME=Laravel
@@ -89,8 +89,8 @@ APP_URL=http://localhost
 
 ### Time value in the past/future
 
-If you want to have some time value in the past/future, you can build it by chaining various Laravel/Carbon helpers, like `now()->[add or subtract something]->setTime()`
 
+Si quieres usar algún valor de tiempo como pasado/futuro, puedes construirlo usando los helpers de Laravel/Carbon de esta manera: 
 ```php
 $product = Product::factory()->create([
      'published_at' => now()->addDay()->setTime(14, 00),
@@ -99,12 +99,9 @@ $product = Product::factory()->create([
 
 ### Do some work after a response has been sent to the browser
 
-You can also use middleware to do some work after a response has been sent to the browser. Such middleware is called Terminable Middleware.
+También puedes añadir lógica a los  middlwares después de mandar una respuesta al navegador.
 
-You can make a middleware terminable by defining a `terminate` method on a middleware.
-
-This method will be automatically called after a response is sent to the browser. It will have both request and response as params.
-
+Para esto debes añadir el método `terminate` en ell middleware. Este método será automaticamente llamado despues de enviar la respuesta al navegador. Utiliza los mismos parametros que el método `handle()`
 ```php
 class TerminatingMiddleware
 {
@@ -120,13 +117,14 @@ class TerminatingMiddleware
 }
 ```
 
-Tip given by [@Laratips1](https://twitter.com/Laratips1/status/1567045288338280448/)
+
+⭐ Aportación de  [@Laratips1](https://twitter.com/Laratips1/status/1567045288338280448/)
 
 ### Redirect with URL fragment
 
-Did you know you can add a URI fragment when redirecting to a route in Laravel?
+¿Sabías que puedes añadir un fragmento de URL extra cuando redireccionas a una ruta en Laravel?
 
-Super useful when redirecting to a specific section of the page. E.g. reviews section on a product page.
+Es bastante util cuando se trata de redireccionar a una sección específica de la pagina por ejemplo: Las sección de reviews en un producto.
 ```php
 return redirect()
      ->back()
@@ -139,11 +137,11 @@ return redirect()
      // domain.test/product/23#reviews
 ```
 
-Tip given by [@ecrmnn](https://twitter.com/ecrmnn/status/1574813643425751040)
+⭐ Aportación de   [@ecrmnn](https://twitter.com/ecrmnn/status/1574813643425751040)
 
 ### Use middleware to adjust incoming request
 
-Laravel's middlewares are a great way to transform incoming requests. For example, I decided to rename a model in my application; instead of bumping the API version for a breaking change, I simply convert those requests using the old reference.
+Los middlewares sirven de muchas maneras como modificar el contenido de peticiones entrantes. Por ejemplo:  decidí renombrar un modelo en mi aplicación, en vez de añadir una nueva versión de API para un cambio importante, simplemente puedo convertir esas peticiones usando una referencia.
 ```php
 class ConvertLicenseeIntoContact
 {
@@ -158,53 +156,56 @@ class ConvertLicenseeIntoContact
 }
 ```
 
-Tip given by [@Philo01](https://twitter.com/Philo01/status/1581214787467235329)
+⭐ Aportación de  [@Philo01](https://twitter.com/Philo01/status/1581214787467235329)
 
 ### Redirect away from Laravel app
 
-Sometimes, you might need to redirect away from your Laravel application to other websites. In that case, there is a handy away method you can call on the redirect() method...
-
+Algunas veces necesitas redireccionar fuera de tu aplicación, para estos casos existe el método **away** que puedes llamarlo junto con el método  **redirect()**.
 ```php
 redirect()->away('https://www.google.com');
 ```
 
-It creates a `RedirectResponse` without any additional URL encoding, validation, or verification.
 
-Tip given by [@Laratips1](https://twitter.com/Laratips1/status/1581887837972361216)
+Esto crea un  `RedirectResponse`  sin adicionales URL encoding, validaciones o verificaciones.
+
+⭐ Aportación de  [@Laratips1](https://twitter.com/Laratips1/status/1581887837972361216)
 
 ### Blade directive to show data in specific environment
 
-Did you know Laravel has a 'production' blade directive that you can use to show data only when you are in a production environment?
+¿Sabías que Laravel Blade tiene directivas como 'Production' que puedes usar para mostrar información cuando tu entorni es Producción?
 
-There is also another 'env' directive that you can use to show data in the environment you specify.
+Hay también otra directica 'env' que puedes usar para mostrar información en un entorno(production, staging, development) específico.
 ```blade
 @production
      // I am only visible to the production environment...
+     // Soy visible en el entorno production
 @endproduction
 
 @env('staging')
      // I am only visible to the staging environment...
+     // Soy solo visible en el enotrni staging
 @endenv
 
 @env(['staging', 'production'])
      // I am only visible to both the staging and production environment...
+     // Soy solo visible ambos entornos staging y production
 @endenv
 ```
 
-Tip given by [@Laratips1](https://twitter.com/Laratips1/status/1582615079874220032)
+⭐ Aportación de  [@Laratips1](https://twitter.com/Laratips1/status/1581887837972361216)
 
 ### Schedule Laravel job based on time zone
 
-Do you know you can schedule laravel job based on time zone
+¿Sabías que puedes programar Laravel jobs basados en la zona horaria?
 
-Setting Timezone for One Command:
 ```php
 $schedule->command('reportg:generate')
          ->timezone('America/New_York')
          ->at('2:00');
 ```
 
-If you are repeatedly assigning the same timezone to all of your schedule tasks, you may wish to define a `scheduleTimezone` method in you `app\Console\Kernel` class:
+
+Si en repetidas ocasiones asignas la misma zona horaria en todas tus tareas programadas, puedes definir el método  `scheduleTimezone`  en la clase `app\Console\Kernel` 
 ```php
 protected function scheduleTimezone()
 {
@@ -212,11 +213,12 @@ protected function scheduleTimezone()
 }
 ```
 
-Tip given by [@binumathew](https://twitter.com/binumathew/status/1584830693791928320)
+⭐ Aportación de [@binumathew](https://twitter.com/binumathew/status/1584830693791928320)
 
 ### Use assertModelMissing instead assertDatabaseMissing
 
-While testing model deletion, use assertModelMissing instead assertDatabaseMissing.
+
+Mientras realizamos pruebas tipo borrado de modelos, usa `assertModelMissing` en vez de `assertDatabaseMissing`
 ```php
 /** @test */
 public function allowed_user_can_delete_task()
@@ -227,18 +229,21 @@ public function allowed_user_can_delete_task()
           ->assertNoContent();
 
      // Instead of assertDatabaseMissing to check if the model missing from the database
+     // En vez de usar assertDatabaseMissing para verificar si el modelo no está en la base de datos.
      $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
 
-     // use directly assertModelMissing
+     // use directly assertModelMissing 
+     //usa directamente assertModelMissing
      $this->assertModelMissing($task);
 }
 ```
 
-Tip given by [@h_ik04](https://twitter.com/h_ik04/status/1585593621193129986)
+
+⭐ Aportación de [@h_ik04](https://twitter.com/h_ik04/status/1585593621193129986)
 
 ### Various options to format diffForHumans()
 
-In Carbon, did you know you can add various options to format diffForHumans()? [Read the docs for more examples.](https://carbon.nesbot.com/docs/#api-humandiff)
+En Laravel/Carbon, ¿Sabías que puedes añadir varias opciones de formato para que las fechas sean leídas sin complicaciones? [Mira la documentación completa para más ejemplos](https://carbon.nesbot.com/docs/#api-humandiff)
 ```php
 $user->created_at->diffForHumans();
 ```
@@ -273,10 +278,9 @@ $user->created_at->diffForHumans([
 
 ### Create custom disks at runtime
 
-Did you know that you can create custom disks at runtime without the need to have the config in your config/filesystems file?
+¿Sabías que puedes crear discos personalizados en tiempo de ejecución sin necesidad de tener un archivo config/filesystems.file ?
 
-This can be handy to manage files in custom paths without the need of adding them to the config.
-
+Esto puede ser útil para administrar archivos en rutas personalizadas sin la necesidad de agregarlas a la configuración.
 ```php
 $avatarDisk = Storage::build([
     'driver' => 'local',
@@ -285,16 +289,15 @@ $avatarDisk = Storage::build([
 $avatarDisk->put('user_avatar.jpg', $image);
 ```
 
-Tip given by [@wendell_adriel](https://twitter.com/wendell_adriel/)
+⭐ Aportación de [@wendell_adriel](https://twitter.com/wendell_adriel/)
 
 ### When (NOT) to run "composer update"
 
-Not so much about Laravel, but... Never run `composer update` on production live server, it's slow and will "break" repository. Always run `composer update` locally on your computer, commit new `composer.lock` to the repository, and run `composer install` on the live server.
+Esto no está tan relacionado a Laravel, pero nunca corras el comando `composer update`  en producción, es bastante lento y  puede romper las dependecias. SIempre corre `composer update` localmente, sube el commit con los cambios  del `composer.lock`  y después en  producción corre `composer install`.
 
 ### Composer: Check for Newer Versions
 
-If you want to find out which of your `composer.json` packages have released newer versions, just run `composer outdated`. You will get a full list with all information, like this below.
-
+Si quieres saber cuando los paquetes del  `composer.json`  han lanzado una nueva versión, solo corre el compando   `composer outdated`. Este lanzará una lista con toda la información de los paquetes que necesitan actualizarse:
 ```
 phpdocumentor/type-resolver 0.4.0 0.7.1
 phpunit/php-code-coverage   6.1.4 7.0.3 Library that provides collection, processing, and rende...
@@ -305,8 +308,7 @@ sebastian/global-state      2.0.0 3.0.0 Snapshotting of global state
 
 ### Auto-Capitalize Translations
 
-In translation files (`resources/lang`), you can specify variables not only as `:variable`, but also capitalized as `:VARIABLE` or `:Variable` - and then whatever value you pass - will be also capitalized automatically.
-
+En los archivos de traducciones `resources/lang`, puedes especificar no solo variables así `:variable`, sino también capitalizarlas así `:Variable` o `:VARIABLE` a el valor que le pases este será capitalizado automaticamente.
 ```php
 // resources/lang/en/messages.php
 'welcome' => 'Welcome, :Name'
@@ -317,7 +319,8 @@ echo __('messages.welcome', ['name' => 'taylor']);
 
 ### Carbon with Only Hours
 
-If you want to have a current date without seconds and/or minutes, use Carbon's methods like `setSeconds(0)` or `setMinutes(0)`.
+
+Si quieres obtener la fecha actual sin segundos y/o minutos, usa los métodos `setSeconds(0)` o  `setMinutes(0)` de Carbon. 
 
 ```php
 // 2020-04-20 08:12:34
@@ -335,9 +338,9 @@ echo now()->startOfHour();
 
 ### Single Action Controllers
 
-If you want to create a controller with just one action, you can use `__invoke()` method and even create "invokable" controller.
+Si necesitas crear un controlador para manejar una sola acción puedes usar el método  `__invoke()`  y además crear un controlador  "invokable" .
 
-Route:
+Ruta:
 
 ```php
 Route::get('user/{id}', ShowProfile::class);
@@ -365,7 +368,7 @@ class ShowProfile extends Controller
 
 ### Redirect to Specific Controller Method
 
-You can `redirect()` not only to URL or specific route, but to a specific Controller's specific method, and even pass the parameters. Use this:
+Con el método  `redirect()` no solo puedes  redireccionar a una url en específco o nombre de la ruta, sino también a un controlador específico en cualquier método e incluso pasarle parametros.
 
 ```php
 return redirect()->action([SomeController::class, 'method'], ['param' => $value]);
@@ -373,17 +376,19 @@ return redirect()->action([SomeController::class, 'method'], ['param' => $value]
 
 ### Use Older Laravel Version
 
-If you want to use OLDER version instead of the newest Laravel, use this command:
+Si quieres usar una version más antigua en vez de la ultima usa este comando:
 
 ```bash
 composer create-project --prefer-dist laravel/laravel project "7.*"
 ```
 
-Change 7.\* to whichever version you want.
+Cambiar 7:* por la versión que quieras
 
 ### Add Parameters to Pagination Links
 
 In default Pagination links, you can pass additional parameters, preserve the original query string, or even point to a specific `#xxxxx` anchor.
+
+Por defecto en los  links de paginación puedes pasar parámetros adicionales, sin embargo puedes preservar el original query string o incluso apuntar a un query en específico.
 
 ```blade
 {{ $users->appends(['sort' => 'votes'])->links() }}
@@ -395,15 +400,15 @@ In default Pagination links, you can pass additional parameters, preserve the or
 
 ### Repeatable Callback Functions
 
-If you have a callback function that you need to re-use multiple times, you can assign it to a variable, and then re-use.
+Si tienes una función de llamada y necesitas re-usar multiples veces, puedes asignarlas a una variable.
 
 ```php
 $userCondition = function ($query) {
     $query->where('user_id', auth()->id());
 };
 
-// Get articles that have comments from this user
-// And return only those comments from this user
+// Obtener los articulos que tienen comentarios desde el usuario
+// y retorna solo esos comentarios del usuario.
 $articles = Article::with(['comments' => $userCondition])
     ->whereHas('comments', $userCondition)
     ->get();
@@ -411,7 +416,7 @@ $articles = Article::with(['comments' => $userCondition])
 
 ### Request: has any
 
-You can check not only one parameter with `$request->has()` method, but also check for multiple parameters present, with `$request->hasAny() `:
+Puedes revisar no solo un parámetro con  el método `$request->has()`, pero también revisar por multiples parámetros presentes con:  `$request->hasAny():
 
 ```php
 public function store(Request $request)
@@ -426,28 +431,26 @@ public function store(Request $request)
 
 ### Simple Pagination
 
-In pagination, if you want to have just "Previous/next" links instead of all the page numbers (and have fewer DB queries because of that), just change `paginate()` to `simplePaginate()`:
+En la paginación, si quieres solo mostrar los links de "Anterior / siguiente" en vez de todos los números de las páginas, solo cambia  `paginate()` para `simplePaginate()`:
 
 ```php
-// Instead of
+// En vez de
 $users = User::paginate(10);
 
-// You can do this
+// Puedes hacer lo siguiente
 $users = User::simplePaginate(10);
 ```
 
 ### Blade directive to add true/false conditions
 
-New in Laravel 8.51: `@class` Blade directive to add true/false conditions on whether some CSS class should be added. Read more in [docs](https://laravel.com/docs/8.x/blade#conditional-classes)
 
-Before:
+Desde Laravel 8.51: `@class` es una directiva de Blade para agregar condiciones verdaderas/falsas sobre si se debe agregar una clase de CSS.
 
 ```php
 <div class="@if ($active) underline @endif">`
 ```
 
-Now:
-
+Ahora:
 ```php
 <div @class(['underline' => $active])>
 ```
@@ -468,12 +471,13 @@ Now:
 <span class="p-4 text-gray-500 bg-red"></span>
 ```
 
-Tip given by [@Teacoders](https://twitter.com/Teacoders/status/1445417511546023938)
+⭐ Aportación de [@Teacoders](https://twitter.com/Teacoders/status/1445417511546023938)
 
 ### Jobs can be used without queues
 
-Jobs are discussed in the "Queues" section of the docs, but you can use Jobs without queues, just as classes to delegate tasks to.
-Just call `$this->dispatchNow()` from Controllers
+Jobs son bastante discutidos en la sección de  "Queues"  en la documentación oficial, pero puedes usar Jobs sin queues, solo como clases para delegar tareas.
+
+Solo llama ``$this->dispatchNow() desde los controladores.
 
 ```php
 public function approve(Article $article)
@@ -486,9 +490,9 @@ public function approve(Article $article)
 
 ### Use faker outside factories or seeders
 
-If you want to generate some fake data, you can use Faker even outside factories or seeds, in any class.
+SI quieres generar fake data, puedes usar Faker incluso fuera de factories o seeders en cualquier clase:
 
-_Keep in mind: to use it in **production**, you need to move faker from `"require-dev"` to `"require"` in `composer.json`_
+Ten en cuenta: para usarla en modo producción, necesitas mover el paquete faker desde `"require-dev"` a  `"require"` en el `composer.json`
 
 ```php
 use Faker;
@@ -505,9 +509,7 @@ class WhateverController extends Controller
 
 ### Schedule things
 
-You can schedule things to run daily/hourly in a lot of different structures.
-
-You can schedule an artisan command, a Job class, an invokable class, a callback function, and even execute a shell script.
+Puedes programar cosas para lanzarlas diariamente o cada cierta hora en para todo lo que necesites automatizar. Por ejemplo: un comando artisan, una clase Job, una clase invokable, una función de retorno  e incluso un script de terminal.
 
 ```php
 use App\Jobs\Heartbeat;
@@ -538,20 +540,17 @@ protected function schedule(Schedule $schedule)
 
 ### Search Laravel docs
 
-If you want to search Laravel Docs for some keyword, by default it gives you only the TOP 5 results. Maybe there are more?
-
-If you want to see ALL results, you may go to the GitHub Laravel docs repository and search there directly. https://github.com/laravel/docs
+Si quieres buscar en Laravel Docs por alguna palabra clave, por defecto solo te lanza el top 5 resultados. SI necesitas más resultados puedes irte directamente a el repositorio de [Github](https://github.com/laravel/docs)
 
 ### Filter route:list
 
-New in Laravel 8.34: `php artisan route:list` gets additional flag `--except-path`, so you would filter out the routes you don't want to see. [See original PR](https://github.com/laravel/framework/pull/36619)
+Ahora en Laravel 8.34 el comando `php artisan route:list` tiene un adicional parámetro  `--except-path` para filtrar todas las rutas si no quieres mirar todas. [Original publicación](https://githurb.com/laravel/framework/pull/36619)
 
 ### Blade directive for not repeating yourself
 
-If you keep doing the same formatting of the data in multiple Blade files, you may create your own Blade directive.
+Si quieres mantener el mismo formato de datos en los archivos blade, puedes crear tus propias directivas Blade.
 
-Here's an example of money amount formatting using the method from Laravel Cashier.
-
+En este ejemplo usamos la cantidad de dinero formateado usando el método perteneciente a Laravel Cashier.
 ```php
 "require": {
         "laravel/cashier": "^12.9",
@@ -576,23 +575,22 @@ public function boot()
 
 ### Artisan commands help
 
-If you are not sure about the parameters of some Artisan command, or you want to know what parameters are available, just type `php artisan help [a command you want]`.
+Si no estas seguro sobre qué parámetros sobre cualquier comando, o si quieres saber qué parámetros están disponibles, solo coloca:  `php artisan help [nombre del comando]`.
 
 ### Disable lazy loading when running your tests
 
-If you don't want to prevent lazy loading when running your tests you can disable it
 
+Si quieres prevenir lazy loading cuando corremos nuestros test puedes deshabilitarlos.
 ```php
 Model::preventLazyLoading(!$this->app->isProduction() && !$this->app->runningUnitTests());
 ```
 
-Tip given by [@djgeisi](https://twitter.com/djgeisi/status/1435538167290073090)
+⭐ aportación de [@djgeisi](https://twitter.com/djgeisi/status/1435538167290073090)
 
 ### Using two amazing helpers in Laravel will bring magic results
 
-Using two amazing helpers in Laravel will bring magic results...
-
-In this case, the service will be called and retried (retry). If it stills failing, it will be reported, but the request won't fail (rescue)
+Usar dos helpers bastante prácticos  en Laravel te ayudará bastante...
+En este caso, el servicio será llamado y re-intentado, Si sigue fallando será reportado, pero tu petición no fallará
 
 ```php
 rescue(function () {
@@ -602,30 +600,32 @@ rescue(function () {
 });
 ```
 
-Tip given by [@JuanDMeGon](https://twitter.com/JuanDMeGon/status/1435466660467683328)
+⭐ Aportación de   [@JuanDMeGon](https://twitter.com/JuanDMeGon/status/1435466660467683328)
 
 ### Request parameter default value
 
-Here we are checking if there is a per_page (or any other parameter) value then we will use it, otherwise, we will use a default one.
 
+Aquí  verificamos si el parámetro per_page valor, en caso de que no haya 
 ```php
-// Isteand of this
+// En vez de esto
 $perPage = request()->per_page ? request()->per_page : 20;
 
-// You can do this
+// haz esto
 $perPage = request('per_page', 20);
 ```
 
-Tip given by [@devThaer](https://twitter.com/devThaer/status/1437521022631165957)
+⭐ Aportación de [@devThaer](https://twitter.com/devThaer/status/1437521022631165957)
 
 ### Pass middleware directly into the route without register it
 
+En Laravel somos capaces de colocar directamente un middleware sin registrarlo globalmente.
 ```php
 Route::get('posts', PostController::class)
     ->middleware(['auth', CustomMiddleware::class])
 ```
 
-Tip given by [@sky_0xs](https://twitter.com/sky_0xs/status/1438258486815690766)
+
+⭐ Aportación de  [@sky_0xs](https://twitter.com/sky_0xs/status/1438258486815690766)
 
 ### Transforming an array to CssClasses
 
@@ -644,14 +644,12 @@ $classes = Arr::toCssClasses($array);
  */
 ```
 
-Tip given by [@dietsedev](https://twitter.com/dietsedev/status/1438550428833271808)
+⭐ Aportación de  [@dietsedev](https://twitter.com/dietsedev/status/1438550428833271808)
 
 ### "upcomingInvoice" method in Laravel Cashier (Stripe)
 
-You can show how much a customer will pay in the next billing cycle.
-
-There is a "upcomingInvoice" method in Laravel Cashier (Stripe) to get the upcoming invoice details.
-
+Puedes mostrar cuanto dinero un cliente va a pagar en su siguiente ciclo de pago (billing cycle). Hay un método en Laravel Cashier para obtener el siguiente detalle de recibo de pago.
+	
 ```php
 Route::get('/profile/invoices', function (Request $request) {
     return view('/profile/invoices', [
@@ -661,7 +659,8 @@ Route::get('/profile/invoices', function (Request $request) {
 });
 ```
 
-Tip given by [@oliverds\_](https://twitter.com/oliverds_/status/1439997820228890626)
+
+⭐ Aportación de [@oliverds\_](https://twitter.com/oliverds_/status/1439997820228890626)
 
 ### Laravel Request exists() vs has()
 
@@ -675,36 +674,41 @@ $request->exists('popular') // true
 $request->has('popular') // true
 ```
 
-Tip given by [@coderahuljat](https://twitter.com/coderahuljat/status/1442191143244951552)
+⭐ Aportación de [@coderahuljat](https://twitter.com/coderahuljat/status/1442191143244951552)
 
 ### There are multiple ways to return a view with variables
 
+Existen muchas formas de retornar variables a las vistas Blade.
+
 ```php
 // First way ->with()
+// Primera manera 
 return view('index')
     ->with('projects', $projects)
     ->with('tasks', $tasks)
 
-// Second way - as an array
+// Segunda  manera
 return view('index', [
         'projects' => $projects,
         'tasks' => $tasks
     ]);
 
-// Third way - the same as second, but with variable
+// Tercera manera
 $data = [
     'projects' => $projects,
     'tasks' => $tasks
 ];
 return view('index', $data);
 
-// Fourth way - the shortest - compact()
+// Cuarta manera
 return view('index', compact('projects', 'tasks'));
 ```
 
 ### Schedule regular shell commands
 
 We can schedule regular shell commands within Laravel scheduled command
+
+También podemos programar comándos de shell dentro de Laravel.
 
 ```php
 // app/Console/Kernel.php
@@ -718,17 +722,18 @@ class Kernel extends ConsoleKernel
 }
 ```
 
-Tip given by [@anwar_nairi](https://twitter.com/anwar_nairi/status/1448985254794915845)
+⭐ Aportación de  [@anwar_nairi](https://twitter.com/anwar_nairi/status/1448985254794915845)
 
 ### HTTP client request without verifying
 
-Sometimes, you may want to send HTTP request without verifying SSL in your local environment, you can do like so:
+A veces queremos enviar peticiones HTTP saltándonos la verificación SSL en nuestro entorno local, para esto usamos: 
 
 ```php
 return Http::withoutVerifying()->post('https://example.com');
 ```
 
-If you want to set multiple options, you can use `withOptions`.
+
+Si queremos hacer peticiones más complejas con multiples parámetros podemos usar:
 
 ```php
 return Http::withOptions([
@@ -737,18 +742,18 @@ return Http::withOptions([
 ])->post('https://example.com');
 ```
 
-Tip given by [@raditzfarhan](https://github.com/raditzfarhan)
+⭐  Aportación de [@raditzfarhan](https://github.com/raditzfarhan)
 
 ### Test that doesn't assert anything
 
-Test that doesn't assert anything, just launch something which may or may not throw an exception
+Existen test  que no afirma nada, simplemente lanza algo que puede o no generar una excepción
 
 ```php
 class MigrationsTest extends TestCase
 {
     public function test_successful_foreign_key_in_migrations()
     {
-        // We just test if the migrations succeeds or throws an exception
+        // Lanzamos el test si las migraciones son exitosas o lanza una exepción
         $this->expectNotToPerformAssertions();
 
 
@@ -759,7 +764,7 @@ class MigrationsTest extends TestCase
 
 ### "Str::mask()" method
 
-Laravel 8.69 released with "Str::mask()" method which masks a portion of string with a repeated character
+Laravel 8.69 ha lanzado el método `Str::mask()` el cual añade al original string un carácter x numero de veces. 
 
 ```php
 class PasswordResetLinkController extends Controller
@@ -770,21 +775,22 @@ class PasswordResetLinkController extends Controller
 
         $maskedEmail = Str::mask($userEmail, '*', 4); // user***************
 
-        // If needed, you provide a negative number as the third argument to the mask method,
-        // which will instruct the method to begin masking at the given distance from the end of the string
+        // Si lo necesitas, puedes colocar un número negativo como tercer arumento a el método
+        // Lo cual indicará al método que comience a colocar el string  a partir de la distancia dada desde el final de la cadena.
 
         $maskedEmail = Str::mask($userEmail, '*', -16, 6); // use******domain.com
     }
 }
 ```
 
-Tip given by [@Teacoders](https://twitter.com/Teacoders/status/1457029765634744322)
+⭐  Aportación de [@Teacoders](https://twitter.com/Teacoders/status/1457029765634744322)
 
 ### Extending Laravel classes
 
-There is a method called macro on a lot of built-in Laravel classes. For example Collection, Str, Arr, Request, Cache, File, and so on.
 
-You can define your own methods on these classes like this:
+Existe un método llamado macro en muchas de las clases de Laravel. Por ejemplo en Collection, Str, Arr, Request, Cache, File y más.
+
+Puedes definir tus propios método en sobre esas clases así:
 
 ```php
 Str::macro('lowerSnake', function (string $str) {
@@ -795,48 +801,47 @@ Str::macro('lowerSnake', function (string $str) {
 Str::lowerSnake('MyString');
 ```
 
-Tip given by [@mmartin_joo](https://twitter.com/mmartin_joo/status/1457635252466298885)
+⭐  Aportación de [@mmartin_joo](https://twitter.com/mmartin_joo/status/1457635252466298885)
 
 ### Can feature
 
-If you are running Laravel `v8.70`, you can chain `can()` method directly instead of `middleware('can:..')`
+Si estás corriendo la versión `v8.70` puedes añadir el método `can()` directamente en vez de declararlo así: `middleware('can:..')`
 
 ```php
-// instead of
+// En vez de
 Route::get('users/{user}/edit', function (User $user) {
     ...
 })->middleware('can:edit,user');
 
-// you can do this
+// Puedes realizar esto
 Route::get('users/{user}/edit', function (User $user) {
     ...
 })->can('edit' 'user');
 
-// PS: you must write UserPolicy to be able to do this in both cases
+// Por cierto, necesitas crear UserPolicy para poder hacer esto en ambas clases
 ```
 
-Tip given by [@sky_0xs](https://twitter.com/sky_0xs/status/1458179766192853001)
+⭐ Aportación de [@sky_0xs](https://twitter.com/sky_0xs/status/1458179766192853001)
 
 ### Temporary download URLs
 
-You can use temporary download URLs for your cloud storage resources to prevent unwanted access. For example, when a user wants to download a file, we redirect to a s3 resource but have the URL expire in 5 seconds.
+Puedes usar  URL de descarga temporales para los archivos que contenga tu nube para prevenir acceso no permitido. Por ejemplo cuando un usuario quiere descargar un archivo, el direccionamiento a el recurso S3 su URL expira en 5 segundos.
 
 ```php
 public function download(File $file)
 {
-    // Initiate file download by redirecting to a temporary s3 URL that expires in 5 seconds
+    //Inicia la descrga del archivo redireccionandolo a una URL S3 que expira en 5 segundos
     return redirect()->to(
         Storage::disk('s3')->temporaryUrl($file->name, now()->addSeconds(5))
     );
 }
 ```
 
-Tip given by [@Philo01](https://twitter.com/Philo01/status/1458791323889197064)
+⭐ Aportación de  [@Philo01](https://twitter.com/Philo01/status/1458791323889197064)
 
 ### Dealing with deeply-nested arrays
 
-If you have a complex array, you can use `data_get()` helper function to retrieve a value from a nested array using "dot" notation and wildcard.
-
+Si tienes un complejo arreglo, puedes usar el helper  `data_get()` para retornar un valor desde un arreglo dentro de un arreglo usando ".":
 ```php
 $data = [
   0 => ['user_id' => 1, 'created_at' => 'timestamp', 'product' => {object Product}],
@@ -844,31 +849,30 @@ $data = [
   2 => etc
 ];
 
-// Now we want to get all products ids. We can do like this:
 
+// Para obtener todos los id de productos, podemos hacer esto:
 data_get($data, '*.product.id');
 
-// Now we have all products ids [1, 2, 3, 4, 5, etc...]
+// Como resultado sería [1, 2, 3, 4, 5, etc...]
 ```
 
-In the example below, if either `request`, `user` or `name` are missing then you'll get errors.
+
+En el ejemplo de abajo, si la petición, el user o el campo name no se encuentran lanzará un error  
 
 ```php
 $value = $payload['request']['user']['name'];
 
-// The data_get function accepts a default value, which will be returned if the specified key is not found.
-
+// La función acepta valores por defecto, lo cual será retornado si no encuentra las keys
 $value = data_get($payload, 'request.user.name', 'John')
 ```
 
-Tip given by [@mattkingshott](https://twitter.com/mattkingshott/status/1460970984568094722)
+⭐ Aportación de [@mattkingshott](https://twitter.com/mattkingshott/status/1460970984568094722)
 
 ### Customize how your exceptions are rendered
 
-You can customize how your exceptions are rendered by adding a 'render' method to your exception.
+Puedes personalizar cómo las excepciones son retornados con solo añadir el método render en la excepción:
 
-For example, this allows you to return JSON instead of a Blade view when the request expects JSON.
-
+Por ejemplo, el código de abajo permite retornar JSON en vez de una vista Blade cuando la petición espera un JSON
 ```php
 abstract class BaseException extends Exception
 {
@@ -898,28 +902,28 @@ class LicenseExpiredException extends BaseException
 }
 ```
 
-Tip given by [@Philo01](https://twitter.com/Philo01/status/1461331239240192003/)
+⭐Aportación de [@Philo01](https://twitter.com/Philo01/status/1461331239240192003/)
 
 ### The tap helper
 
-The `tap` helper is a great way to remove a separate return statement after calling a method on an object. Makes things nice and clean
+El helper `tap` es una excelente manera de eliminar una declaración de retorno separada después de llamar a un método en un objeto. Hace que las cosas sean ordenadas y limpias.
 
 ```php
-// without tap
+// Sin el método Tap
 $user->update(['name' => 'John Doe']);
 
 return $user;
 
-// with tap()
+// Con el método tap
 return tap($user)->update(['name' => 'John Doe']);
 ```
 
-Tip given by [@mattkingshott](https://twitter.com/mattkingshott/status/1462058149314183171)
+⭐ Aportación de [@mattkingshott](https://twitter.com/mattkingshott/status/1462058149314183171)
 
 ### Reset all of the remaining time units
 
-You can insert an exclamation into the `DateTime::createFromFormat` method to reset all of the remaining time units
 
+Puedes insertar un signo de exclamación dentro del método `DateTime::createFromFormat` para  eliminar las unidades de tiempo.
 ```php
 // 2021-10-12 21:48:07.0
 DateTime::createFromFormat('Y-m-d', '2021-10-12');
@@ -931,12 +935,11 @@ DateTime::createFromFormat('!Y-m-d', '2021-10-12');
 DateTime::createFromFormat('!Y-m-d H', '2021-10-12');
 ```
 
-Tip given by [@SteveTheBauman](https://twitter.com/SteveTheBauman/status/1448045021006082054)
+⭐ Aportación de  [@SteveTheBauman](https://twitter.com/SteveTheBauman/status/1448045021006082054)
 
 ### Scheduled commands in the console kernel can automatically email their output if something goes wrong
 
-Did you know that any commands you schedule in the console kernel can automatically email their output if something goes wrong
-
+¿Sabías que cualquier comando que programes en el kernel puedes automáticamente enviar el error si algo sale mal a través de email.
 ```php
 $schedule
     ->command(PruneOrganizationsCOmmand::class)
@@ -944,34 +947,36 @@ $schedule
     ->emailOutputOnFailure(config('mail.support'));
 ```
 
-Tip given by [@mattkingshott](https://twitter.com/mattkingshott/status/1463160409905455104)
+
+⭐ Aportación de  [@mattkingshott](https://twitter.com/mattkingshott/status/1463160409905455104)
 
 ### Be careful when constructing your custom filtered queries using GET parameters
+
+Cuando construimos filtros en nuestros endpoints debemos tomar en cuenta ciertos métodos que nos pueden ayudar a evitar errores.
 
 ```php
 if (request()->has('since')) {
     // example.org/?since=
-    // fails with illegal operator and value combination
+    // Falla porque el valor no existe
     $query->whereDate('created_at', '<=', request('since'));
 }
 
 if (request()->input('name')) {
     // example.org/?name=0
-    // fails to apply query filter because evaluates to false
+    // Falla al aplicar el filtro porque evalua en falso
     $query->where('name', request('name'));
 }
 
 if (request()->filled('key')) {
-    // correct way to check if get parameter has value
+    // Manera correcta para revisar si el parametro tiene un valor
 }
 ```
 
-Tip given by [@mc0de](https://twitter.com/mc0de/status/1465209203472146434)
+⭐ Aportación de [@mc0de](https://twitter.com/mc0de/status/1465209203472146434)
 
 ### Dust out your bloated route file
 
-Dust out your bloated route file and split it up to keep things organized
-
+Desempolva tu archivo de rutas  y divídelo para mantener las cosas organizadas.
 ```php
 class RouteServiceProvider extends ServiceProvider
 {
@@ -1001,20 +1006,20 @@ class RouteServiceProvider extends ServiceProvider
 }
 ```
 
-Tip given by [@Philo01](https://twitter.com/Philo01/status/1466068376330153984)
-
+⭐ Aportación de [@Philo01](https://twitter.com/Philo01/status/1466068376330153984)
 ### You can send e-mails to a custom log file
 
-In Laravel you can send e-mails to a custom log file.
+En Laravel puedes enviar emails a los archivos logs.
 
-You can set your environment variables like this:
+Solo tienes que colocar tu entorno de variables así: 
 
 ```
 MAIL_MAILER=log
 MAIL_LOG_CHANNEL=mail
 ```
 
-And also configure your log channel:
+  
+Y también configurar la ruta:
 
 ```php
 'mail' => [
@@ -1024,51 +1029,50 @@ And also configure your log channel:
 ],
 ```
 
-Now you have all your e-mails in /logs/mails.log
 
-It's a good use case to quickly test your mails.
+Ahora ya tienes todos tus emails en el archivo  /logs/mails.log. Es un buen caso de uso para revisar tus emails sin configurar un servicio.
 
-Tip given by [@mmartin_joo](https://twitter.com/mmartin_joo/status/1466362508571131904)
+⭐ Aportación de [@mmartin_joo](https://twitter.com/mmartin_joo/status/1466362508571131904)
 
 ### Markdown made easy
 
-Laravel provides an interface to convert markdown in HTML out of the box, without the need to install new composer packages.
+Laravel provee una interfaz para convertir markdown en HTML, sin necesidad de instalar nuevos paquetes.
 
 ```php
 $html = Str::markdown('# Changelogfy')
 ```
 
-Output:
+Salida:
 
 ```
 <h1>Changelogfy</h1>
 ```
 
-Tip given by [@paulocastellano](https://twitter.com/paulocastellano/status/1467478502400315394)
+⭐ Aportación de  [@paulocastellano](https://twitter.com/paulocastellano/status/1467478502400315394)
 
 ### Simplify if on a request with whenFilled() helper
 
-We often write if statements to check if a value is present on a request or not.
+Usualmente escribimos sentencias is si un valor está presente en la petición o no.
 
-You can simplify it with the `whenFilled()` helper.
-
+Podemos simplificar lo con el helper `whenFilled()` :`
 ```php
 public function store(Request $request)
 {
     $request->whenFilled('status', function (string $status)) {
         // Do something amazing with the status here!
+        // Aqui entra cuando contiene algun valor
     }, function () {
         // This it called when status is not filled
+        // Esto es llamado cuando el status no contiene nada
     });
 }
 ```
 
-Tip given by [@mmartin_joo](https://twitter.com/mmartin_joo/status/1467886802711293959)
+⭐ Aportación de [@mmartin_joo](https://twitter.com/mmartin_joo/status/1467886802711293959)
 
 ### Pass arguments to middleware
 
-You can pass arguments to your middleware for specific routes by appending ':' followed by the value. For example, I'm enforcing different authentication methods based on the route using a single middleware.
-
+Puedes pasar argumentos a tus middlewares para rutas específicas tan solo añadiendo ':' seguido del valor. Por ejemplo:  puedes aplicar diferentes métodos de autenticación basados en la ruta mediante un único middleware.
 ```php
 Route::get('...')->middleware('auth.license');
 Route::get('...')->middleware('auth.license:bearer');
@@ -1087,16 +1091,16 @@ class VerifyLicense
         };
 
         // Verify license and return response based on the authentication type
+        
     }
 }
 ```
 
-Tip given by [@Philo01](https://twitter.com/Philo01/status/1471864630486179840)
+⭐ Aportación de [@Philo01](https://twitter.com/Philo01/status/1471864630486179840)
 
 ### Get value from session and forget
 
-If you need to grab something from the Laravel session, then forget it immediately, consider using `session()->pull($value)`. It completes both steps for you.
-
+Si necesitas tomar algún valor de Laravel Session y después eliminarlo, considera usar `session()->pull($value)`.  
 ```php
 // Before
 $path = session()->get('before-github-redirect', '/components');
@@ -1109,20 +1113,17 @@ return redirect($path);
 return redirect(session()->pull('before-github-redirect', '/components'))
 ```
 
-Tip given by [@jasonlbeggs](https://twitter.com/jasonlbeggs/status/1471905631619715077)
+⭐ Aportación de [@jasonlbeggs](https://twitter.com/jasonlbeggs/status/1471905631619715077)
 
 ### $request->date() method
 
-New in this week's Laravel v8.77: `$request->date()` method.
-
-Now you don't need to call Carbon manually, you can do something like: `$post->publish_at = $request->date('publish_at')->addHour()->startOfHour();`
-
-[Link to full pr](https://github.com/laravel/framework/pull/39945) by [@DarkGhostHunter](https://twitter.com/DarkGhostHunter)
-
+Ahora en Laravel 8.77 el método  `$request->date()` permite recuperar la fecha de la petición. 
+[Link ](https://github.com/laravel/framework/pull/39945) de [@DarkGhostHunter](https://twitter.com/DarkGhostHunter)
 ### Use through instead of map when using pagination
 
 When you want to map paginated data and return only a subset of the fields, use `through` rather than `map`. The `map` breaks the pagination object and changes it's identity. While, `through` works on the paginated data itself
 
+Cuando queremos mapear los datos paginados y retornar solo un unos campos, usa `through` en vez de  `map`. . El método map rompe la paginación y cambia su identidad. Mientras que through trabaja sobre los datos paginados.
 ```php
 // Don't: Mapping paginated data
 $employees = Employee::paginate(10)->map(fn ($employee) => [
@@ -1137,11 +1138,12 @@ $employees = Employee::paginate(10)->through(fn ($employee) => [
 ])
 ```
 
-Tip given by [@bhaidar](https://twitter.com/bhaidar/status/1475073910383120399)
+⭐ Aportación de [@bhaidar](https://twitter.com/bhaidar/status/1475073910383120399)
 
 ### Quickly add a bearer token to HTTP request
 
-There’s a `withToken` method to attach the `Authorization` header to a request.
+
+Hay un método  `withToken`  que permite adjuntar directamente el header  `Authorization`  a la petición
 
 ```php
 // Booo!
@@ -1153,17 +1155,16 @@ Http::withHeader([
 Http::withToken('dQw4w9WgXcq');
 ```
 
-Tip given by [@p3ym4n](https://twitter.com/p3ym4n/status/1487809735663489024)
+⭐ Aportación de [@p3ym4n](https://twitter.com/p3ym4n/status/1487809735663489024)
 
 ### Copy file or all files from a folder
 
-You can use the `readStream` and `writeStream` to copy a file (or all files from a folder) from one disk to another keeping the memory usage low.
-
+Puedes usar el método `readStream`  y  `writeStream` para copiar archivos desde on disco a otro manteniendo el uso de memoria bajo.
 ```php
-// List all the files from a folder
+//Lista de todos los archivos de un folder
 $files = Storage::disk('origin')->allFiles('/from-folder-name');
 
-// Using normal get and put (the whole file string at once)
+// Usando el método convencional get y put para moverlos.
 foreach($files as $file) {
     Storage::disk('destination')->put(
         "optional-folder-name" . basename($file),
@@ -1171,7 +1172,7 @@ foreach($files as $file) {
     );
 }
 
-// Best: using Streams to keep memory usage low (good for large files)
+// Usando Streams para mantener el uso de memoria bajo
 foreach ($files as $file) {
     Storage::disk('destination')->writeStream(
         "optional-folder-name" . basename($file),
@@ -1180,28 +1181,29 @@ foreach ($files as $file) {
 }
 ```
 
-Tip given by [@alanrezende](https://twitter.com/alanrezende/status/1488194257567498243)
+⭐ Aportación de [@alanrezende](https://twitter.com/alanrezende/status/1488194257567498243)
 
 ### Sessions has() vs exists() vs missing()
 
-Do you know about `has`, `exists` and `missing` methods in Laravel session?
+¿Sabías sobre los métodos  `has, exists, missing` sobre Laravel Session?
 
 ```php
-// The has method returns true if the item is present & not null.
+// El método has retorna true si el iteme está presente y no nullo
 $request->session()->has('key');
 
-// THe exists method returns true if the item ir present, event if its value is null
+// Este método retorna true si el item esta presente, aunque  el valor sea nullo
 $request->session()->exists('key');
 
-// THe missing method returns true if the item is not present or if the item is null
+// El método missing retorna true si el item no está presente o si el item es nulo
 $request->session()->missing('key');
 ```
 
-Tip given by [@iamharis010](https://twitter.com/iamharis010/status/1489086240729145344)
+⭐ Aportación de [@iamharis010](https://twitter.com/iamharis010/status/1489086240729145344)
 
 ### Test that you are passing the correct data to a view
 
-Need to test that you are passing the correct data to a view? You can use the viewData method on your response. Here are some examples:
+¿Necesitas testear que estás enviando la información correcta a la vista? puedes usar el método `viewData` junto con el response. Aquí hay algunos 
+ejemplos:
 
 ```php
 /** @test */
@@ -1229,16 +1231,16 @@ public function it_returns_the_correct_amount_of_records()
 }
 ```
 
-Tip given by [@JuanRangelTX](https://twitter.com/JuanRangelTX/status/1489944361580351490)
+⭐ Aportación de  [@JuanRangelTX](https://twitter.com/JuanRangelTX/status/1489944361580351490)
 
 ### Use Redis to track page views
 
-Tracking something like page views with MySQL can be quite a performance hit when dealing with high traffic. Redis is much better at this. You can use Redis and a scheduled command to keep MySQL in sync on a fixed interval.
+Hacer un seguimiento de algo como las vistas de página con MySQL puede tener un impacto significativo en el rendimiento cuando se trata de un tráfico elevado. Redis es mucho mejor para esto. Puedes utilizar Redis y un comando programado para mantener a MySQL sincronizado en un intervalo fijo.
 
 ```php
 Route::get('{project:slug', function (Project $project) {
-    // Instead of $project->increment('views') we use Redis
-    // We group the views by the project id
+    // En vez de $project->increment('views') w usamos Redis
+    // Agrupamos las vistas por ej id del proyecto
     Redis::hincrby('project-views', $project->id, 1);
 })
 ```
@@ -1248,8 +1250,9 @@ Route::get('{project:slug', function (Project $project) {
 $schedule->command(UpdateProjectViews::class)->daily();
 
 // Console/Commands/UpdateProjectViews.php
-// Get all views from our Redis instance
+// Obtenemos todas las vistas desde nuestra instancia de Redes
 $views = Redis::hgetall('project-views');
+
 
 /*
 [
@@ -1262,50 +1265,51 @@ $views = Redis::hgetall('project-views');
 
 // Loop through all project views
 foreach ($views as $projectId => $projectViews) {
-    // Increment the project views on our MySQL table
+    // Incrementar las vistas del projecto en nuestra tabla MYSQL
     Project::find($projectId)->increment('views', $projectViews);
 }
 
-// Delete all the views from our Redis instance
+// Eliminar todas las vistas desde nuestra instancia de Redis
 Redis::del('project-views');
 ```
 
-Tip given by [@Philo01](https://twitter.com/JackEllis/status/1491909483496411140)
+⭐ Aportación de  [@Philo01](https://twitter.com/JackEllis/status/1491909483496411140)
 
 ### to_route() helper function
 
-Laravel 9 provides shorter version of `response()->route()`, take a look on the following code:
+Laravel 9 provee una versión más corta de `response()->route()`, echale un vistazo al siguiente código:
 
 ```php
-// Old way
+// Vieja manera
 Route::get('redirectRoute', function() {
     return redirect()->route('home');
 });
 
-// Post Laravel 9
+// Apartir de Laravel 9
 Route::get('redirectRoute', function() {
     return to_route('home');
 });
 
 ```
 
-This helper work in the same way as `redirect()->route('home')`, but it is more concise than an old way.
 
-Tip given by [@CatS0up](https://github.com/CatS0up)
+Este helper funciona de la misma manera como `redirect()->route('home')` pero es mucho mas conciso.
+
+⭐ Aportación de  [@CatS0up](https://github.com/CatS0up)
 
 ### Pause a long running job when queue worker shuts down
 
-When running a long job, if your queue worker gets shutdown by
+Cuando se ejecuta un Job  largo, el Job puede detenerse por estos motivos:
 
-- Stopping the worker.
-- Sending signal **SIGTERM** (**SIGINT** for Horizon).
-- Pressing `CTRL + C` (Linux/Windows).
+- Detener el trabajador.
+- Enviar la señal **SIGTERM** (**SIGINT** para Horizon).
+- Presionar `CTRL + C` (Linux/Windows).
 
-Then the job process may get corrupted while it is doing something.
+Entonces, es posible que el proceso del trabajo se corrompa mientras está realizando alguna tarea.
 
-By checking with `app('queue.worker')->shouldQuit`, we can determine if the worker is shutting down. This way, we can save the current process and requeue the job so that when the queue worker runs again, it can resume from where it left.
+Al verificar con `app('queue.worker')->shouldQuit`, podemos determinar si el trabajador se está apagando. De esta manera, podemos guardar el proceso actual y volver a encolar el trabajo para que cuando el trabajador de la cola se ejecute nuevamente, pueda continuar desde donde se detuvo.
 
-This is very useful in the Containerized world (Kubernetes, Docker etc.) where the container gets destroyed and re-created anytime.
+Esto es muy útil en el mundo de los contenedores (Kubernetes, Docker, etc.) donde el contenedor se destruye y se vuelve a crear en cualquier momento.
 
 ```php
 <?php
@@ -1359,39 +1363,37 @@ class MyLongJob implements ShouldQueue
 }
 ```
 
-Tip given by [@a-h-abid](https://github.com/a-h-abid)
+⭐ Aportación de [@a-h-abid](https://github.com/a-h-abid)
 
 ### Freezing Time in Laravel Tests
 
-In your Laravel tests, you might sometimes need to freeze the time.
-
-This is particularly useful if you're trying to make assertions based on timestamps or need to make queries based on dates and/or times.
+En tus test de Laravel, puedes necesitar congelar el tiempo. Esto es particularmente util si estás intentado hacer pruebas basado en el tiemstamp o necesitas hacer consultas basadas en fechas o tiempo.
 
 ```php
-// To freeze the time, you used to be able to write this at the time top of your tests:
+// Para congelar el tiempo, se solia ser capaz de escribir esto al inicio de tus test:
 Carbon::setTestNow(Carbon::now());
-// You could also use the "travelTo" method:
+// Además puedes usar el método "travelTo"
 $this->travelTo(Carbon::now());
-// You can now use the new "freezeTime" method to keep your code readable and obvious:
+//Puedes usar el nuevo método "freezeTime" para mantener tu código limpio:
 $this->freezeTime();
 ```
 
-Tip given by [@AshAllenDesign](https://twitter.com/AshAllenDesign/status/1509115721183158272)
+⭐ Aportación de  [@AshAllenDesign](https://twitter.com/AshAllenDesign/status/1509115721183158272)
 
 ### New squish helper
 
-New in Laravel from 9.7 `squish` helper.
+Desde Laravel 9.7 el helper  `squish`  nos permite quitar largos espacios, es como el método `trim` pero más poderoso. 
 
 ```php
 $result = Str::squish(' Hello   John,         how   are   you?    ');
 // Hello John, how are you?
 ```
 
-Tip given by [@mattkingshott](https://twitter.com/mattkingshott/status/1511718052752150534)
+⭐ Aportación de  [@mattkingshott](https://twitter.com/mattkingshott/status/1511718052752150534)
 
 ### Specify what to do if a scheduled task fails or succeeds
 
-You can specify what to do if a scheduled task fails or succeeds.
+Puedes especificar que hacer si una tarea falla o es exitosa.
 
 ```php
 $schedule->command('emails:send')
@@ -1404,11 +1406,11 @@ $schedule->command('emails:send')
         });
 ```
 
-Tip given by [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1513221529072414720)
+⭐ Aportación de  [@cosmeescobedo](https://twitter.com/cosmeescobedo/status/1513221529072414720)
 
 ### Scheduled command on specific environments
 
-Running Laravel scheduled command on specific environments.
+Para correr Laravel commandos en entornos específicos:
 
 ```php
 // Not good
@@ -1422,11 +1424,12 @@ $schedule->command('emails:send')
         ->onEnvironment(['production', 'staging']);
 ```
 
-Tip given by [@nguyenduy4994](https://twitter.com/nguyenduy4994/status/1516960273000587265)
+
+⭐ Aportación de [@nguyenduy4994](https://twitter.com/nguyenduy4994/status/1516960273000587265)
 
 ### Add conditionable behavior to your own classes
 
-You can use the [Conditionable Trait](https://laravel.com/api/9.x/Illuminate/Support/Traits/Conditionable.html) to avoid using `if/else` and promote method chaining.
+Puedes usar el [Conditionable Trait](https://laravel.com/api/9.x/Illuminate/Support/Traits/Conditionable.html)  para evitar usar  `if/else` y promover el uso de métodos.
 
 ```php
 <?php
@@ -1456,7 +1459,7 @@ class MyController extends Controller
 {
     public function __invoke(MyRequest $request, MyService $service)
     {
-        // Not good
+        // Not goodsi 
         $service->addParam($request->param);
 
         if ($request->has('something')) {
@@ -1479,9 +1482,9 @@ class MyController extends Controller
 
 ### Perform Action when Job has failed
 
-In some cases, we want to perform some action when job has failed. For example, send an email or a notification.
+En algunos casos, queremos realizar alguna acción cuando un Job ha fallado. Por ejemplo, enviar una notificación a través de email.
 
-For this purpose, we can use `failed()` method in the job class, just like the `handle()` method:
+Para este propósito, podemos usar el método  `failed()`  en la clase Job sobre el método `handle()`: 
 
 ```php
 namespace App\Jobs\Invoice;
@@ -1506,20 +1509,18 @@ class CalculateSingleConsignment implements ShouldQueue
 }
 ```
 
-Tip given by [@pauloimon](https://github.com/pauloimon)
-
+⭐ Aportación de  [@pauloimon](https://github.com/pauloimon)
 
 ### Ignore Database when Job has failed
 
-If you ever need to bypass database when a job fails, you can do one of the below things to skip database:
-- Set env `QUEUE_FAILED_DRIVER` with value `null`. Works from Laravel 8 and above.
-- Set the `failed` value to `null` in `config/queue.php` file, replacing the array (like below code). This one works for Laravel 7 and older.
+Si alguna vez necesitas evitar el uso de la base de datos cuando un trabajo falla, puedes hacer una de las siguientes cosas para omitir la base de datos:
 
+- Establecer la variable de entorno `QUEUE_FAILED_DRIVER` con el valor `null`. Funciona a partir de Laravel 8 y versiones superiores.
+- Establecer el valor de `failed` en `null` en el archivo `config/queue.php`, reemplazando el array (como en el código a continuación). Esto funciona para Laravel 7 y versiones anteriores.
 ```php
     'failed' => null,
 ```
+  
+¿Por qué querrías esto? Para aplicaciones en las que no es necesario almacenar trabajos fallidos y necesitan tener un alto TPS (transacciones por segundo), omitir la base de datos puede ser muy favorable, ya que no estamos accediendo a la base de datos, lo que ahorra tiempo y evita que la base de datos se caiga.
 
-Why you would want this? For applications where you do not need to store failed jobs and they needs to have very high TPS, skipping database can be very favourable as we are not hitting database, saving times & prevent database going down.
-
-Tip given by [@a-h-abid](https://github.com/a-h-abid)
-
+⭐ Aportación de[@a-h-abid](https://github.com/a-h-abid)
