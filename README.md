@@ -9,7 +9,8 @@ Hey,  ¿Te gusta este contenido?  Checa mis cursos premium en  [Laravel courses]
 ---
 
 ¿Necesitas una version en inglés?:
-[LaravelDaily](GitHub - LaravelDaily/laravel-tips: Awesome tips for Laravel](https://github.com/LaravelDaily/laravel-tips)
+[LaravelDaily](https://github.com/LaravelDaily/laravel-tips)
+
 ¿Necesitas una version en Chino?:
 [中文版本](https://github.com/Lysice/laravel-tips-chinese/blob/master/README-zh.md)
 
