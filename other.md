@@ -841,7 +841,7 @@ public function download(File $file)
 
 ### Dealing with deeply-nested arrays
 
-Si tienes un complejo arreglo, puedes usar el helper  `data_get()` para retornar un valor desde un arreglo dentro de un arreglo usando ".":
+Si tienes un arreglo que contiene sub arreglos y necesitas obtener ciertos campos de los sub arreglos, puedes usar el helper  `data_get()` para obtener valores anidados usando un  **.**  por cada nivel:
 ```php
 $data = [
   0 => ['user_id' => 1, 'created_at' => 'timestamp', 'product' => {object Product}],
